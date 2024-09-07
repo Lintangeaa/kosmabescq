@@ -17,7 +17,6 @@ export default defineConfig({
                 {
                     name: "copy-assets",
                     writeBundle() {
-                        // Check if the source directory exists
                         const sourceDir = resolve(
                             __dirname,
                             "vendor/tinymce/tinymce"
