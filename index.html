@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Midtrans Snap Payment</title>
+        <!-- Load Snap.js -->
+        <script
+            type="text/javascript"
+            src="https://app.sandbox.midtrans.com/snap/snap.js"
+            data-client-key="SB-Mid-client-RNwvl9cTz5wzTbZ7"
+        ></script>
+    </head>
+    <body>
+        <h2>Midtrans Snap Payment</h2>
+
+        <!-- Form untuk menunjukkan pembayaran Snap -->
+        <form id="payment-form">
+            <label for="amount">Jumlah Pembayaran (IDR):</label>
+            <input
+                type="number"
+                id="amount"
+                name="amount"
+                required
+                value="100000"
+            />
+            <br /><br />
+            <button type="button" id="pay-button">Bayar Sekarang</button>
+        </form>
+
+        <script type="text/javascript">
+            // Token yang diberikan
+            const snapToken = "24f04993-ddd2-46e7-b866-cfb330408684";
+
+            document.getElementById("pay-button").onclick = function (event) {
+                event.preventDefault(); // Mencegah form submit default
+
+                // Panggil Midtrans Snap untuk memproses pembayaran dengan token
+                snap.pay(snapToken, {
+                    onSuccess: function (result) {
+                        // Tindakan jika pembayaran berhasil
+                        alert("Pembayaran Berhasil!");
+                        console.log(result);
+                    },
+                    onPending: function (result) {
+                        // Tindakan jika pembayaran masih pending
+                        alert("Pembayaran Masih Dalam Proses!");
+                        console.log(result);
+                    },
+                    onError: function (result) {
+                        // Tindakan jika ada kesalahan
+                        alert("Terjadi Kesalahan!");
+                        console.log(result);
+                    },
+                });
+            };
+        </script>
+    </body>
+</html>
