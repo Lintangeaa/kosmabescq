@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Kost;
 use Illuminate\Http\Request;
 
-class AdminKostController extends Controller
+class KostController extends Controller
 {
     public function index()
     {
         $kosts = Kost::with('address')->paginate(10);
-        return view('admin.kost.index', compact('kosts'));
+        return view('kost.index', compact('kosts'));
     }
 
     public function create()
     {
         $addresses = Address::all();
-        return view('admin.kost.create', compact('addresses'));
+        return view('kost.create', compact('addresses'));
     }
 
     public function store(Request $request)
@@ -78,12 +78,12 @@ class AdminKostController extends Controller
 
         Kost::create($kostData);
 
-        return redirect()->route('admin.kost.index')->with('success', 'Kost berhasil ditambahkan.');
+        return redirect()->route('kost.index')->with('success', 'Kost berhasil ditambahkan.');
     }
 
     public function show(Kost $kost)
     {
-        return view('customer.kost.show', compact('kost'));
+        return view('kost.show', compact('kost'));
     }
 
     public function edit(Kost $kost)

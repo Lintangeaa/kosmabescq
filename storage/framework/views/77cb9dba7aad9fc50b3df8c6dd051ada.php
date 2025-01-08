@@ -8,50 +8,47 @@
 <?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-   <?php $__env->slot('header', null, []); ?> 
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-          <?php echo e(__('Daftar Reservasi')); ?>
+     <?php $__env->slot('header', null, []); ?> 
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <?php echo e(__('Daftar Reservasi')); ?>
 
-      </h2>
-   <?php $__env->endSlot(); ?>
-
-  <div class="p-12">
-      <?php if($reservations->isEmpty()): ?>
-          <div class="text-center">
-              <p class="text-gray-600">Tidak ada reservasi yang ditemukan.</p>
-              <a href="<?php echo e(route('customer.kost.index')); ?>" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Cari Kos</a>
-          </div>
-      <?php else: ?>
-          <div class="overflow-x-auto">
-              <table class="min-w-full table-auto bg-white shadow rounded-lg">
-                  <thead>
-                      <tr>
-                          <th class="px-4 py-2 border-b text-left">Nama Kost</th>
-                          <th class="px-4 py-2 border-b text-left">Tanggal Mulai</th>
-                          <th class="px-4 py-2 border-b text-left">Total Bulan</th>
-                          <th class="px-4 py-2 border-b text-left">Status</th>
-                          <th class="px-4 py-2 border-b text-center">Aksi</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <?php $__currentLoopData = $reservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reservation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                          <tr>
-                              <td class="px-4 py-2 border-b"><?php echo e($reservation->kost->nama); ?></td>
-                              <td class="px-4 py-2 border-b"><?php echo e($reservation->tanggal_reservasi); ?></td>
-                              <td class="px-4 py-2 border-b"><?php echo e(floor($reservation->total)); ?> Bulan</td>
-                              <td class="px-4 py-2 border-b"><?php echo e($reservation->status); ?></td>
-                              <td class="px-4 py-2 border-b text-center">
-                                  <?php if($reservation->status == 'Menunggu Pembayaran'): ?>
-                                      <a href="<?php echo e(route('customer.reservations.payment', $reservation->id)); ?>" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Bayar</a>
-                                  <?php endif; ?>
-                              </td>
-                          </tr>
-                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                  </tbody>
-              </table>
-          </div>
-      <?php endif; ?>
-  </div>
+        </h2>
+     <?php $__env->endSlot(); ?>
+  
+    <div class="p-12">
+        <?php if($reservations->isEmpty()): ?>
+            <div class="text-center">
+                <p class="text-gray-600">Tidak ada reservasi yang ditemukan.</p>
+                <a href="<?php echo e(route('customer.kost.index')); ?>" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Cari Kos</a>
+            </div>
+        <?php else: ?>
+            <div class="overflow-x-auto sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php $__currentLoopData = $reservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reservation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+                    <h3 class="text-xl font-semibold text-gray-800"><?php echo e($reservation->kost->nama); ?></h3>
+                    <p class="text-gray-600 mt-2">ID Reservasi: <span class="font-medium text-gray-800"><?php echo e($reservation->id); ?></span></p>
+                    <p class="text-gray-600 mt-1">Tanggal Mulai: <span class="font-medium text-gray-800"><?php echo e($reservation->tanggal_reservasi); ?></span></p>
+                    <p class="text-gray-600 mt-1">Total Bulan: <span class="font-medium text-gray-800"><?php echo e(floor($reservation->total)); ?> Bulan</span></p>
+                    <p class="text-gray-600 mt-1">Status: <span class="font-medium text-gray-800"><?php echo e($reservation->status); ?></span></p>
+                
+                    <?php if($reservation->status == 'Menunggu Pembayaran'): ?>
+                        <div class="mt-4 text-center">
+                            <a href="<?php echo e(route('customer.reservations.payment', $reservation->reservation_id)); ?>" class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                Bayar Sekarang
+                            </a>
+                        </div>
+                    <?php elseif($reservation->status == 'Dibayar'): ?>
+                        <div class="mt-4 text-center">
+                            <a href="<?php echo e(route('customer.reservations.invoice', $reservation->reservation_id)); ?>" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                Lihat Invoice
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+        <?php endif; ?>
+    </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>

@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Admin\AdminKostController;
 use App\Http\Controllers\Customer\CustomerKostController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Customer\CustomerReservationController;
+use App\Http\Controllers\KostController;
+use App\Http\Controllers\Owner\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -21,14 +22,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Menambahkan nama pada resource route admin/kost dan admin/user
-    Route::resource('admin/kost', AdminKostController::class)->names([
-        'index' => 'admin.kost.index',
-        'create' => 'admin.kost.create',
-        'store' => 'admin.kost.store',
-        'show' => 'admin.kost.show',
-        'edit' => 'admin.kost.edit',
-        'update' => 'admin.kost.update',
-        'destroy' => 'admin.kost.destroy',
+    Route::resource('manage/kost', KostController::class)->names([
+        'index' => 'kost.index',
+        'create' => 'kost.create',
+        'store' => 'kost.store',
+        'show' => 'kost.show',
+        'edit' => 'kost.edit',
+        'update' => 'kost.update',
+        'destroy' => 'kost.destroy',
     ]);
 
     Route::resource('admin/user', AdminUserController::class)->names([
@@ -49,8 +50,18 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'customer.reservations.destroy'
     ]);
 
-    Route::get('/customer/reservation/{reservation}/payment', [CustomerReservationController::class, 'payment'])->name('customer.reservations.payment');
+    Route::get('/kos', [CustomerKostController::class, 'all'])->name('customer.kost.all');
+
+    Route::get('/payment/{reservation}', [CustomerReservationController::class, 'payment'])->name('customer.reservations.payment');
+    Route::get('/reservations/{reservation}/invoice', [CustomerReservationController::class, 'invoice'])->name('customer.reservations.invoice');
+    Route::get('/reservations/{reservation}/download-invoice', [CustomerReservationController::class, 'downloadInvoice'])->name('customer.reservations.downloadInvoice');
+
+    Route::prefix('owner')->name('owner.')->group(function() {
+        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    });
 });
+
+
 
 Route::post('upload-image', [ImageUploadController::class, 'upload'])->name('upload.image');
 

@@ -31,8 +31,14 @@
                     @endif
 
                     @if (auth()->user()->isAdmin() || auth()->user()->isOwner())
-                        <x-nav-link :href="route('admin.kost.index')" :active="request()->routeIs('admin.kost.index', 'admin.kost.create', 'admin.kost.edit')">
-                            {{ __('Kost') }}
+                        <x-nav-link :href="route('kost.index')" :active="request()->routeIs('kost.index', 'kost.create', 'kost.edit')">
+                            {{ __('Kos') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (auth()->user()->isOwner())
+                        <x-nav-link :href="route('owner.reservations.index')" :active="request()->routeIs('owner.reservations.index')">
+                            {{ __('Reservasi') }}
                         </x-nav-link>
                     @endif
 

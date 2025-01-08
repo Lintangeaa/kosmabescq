@@ -8,8 +8,10 @@ use App\Models\Reservation;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CustomerReservationController extends Controller
 {
@@ -17,6 +19,8 @@ class CustomerReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::where('user_id', Auth::id())->with('kost')->get();
+
+        Log::info('Reservation found:', [$reservations]);
 
         return view('customer.reservations.index', compact('reservations'));
     }
@@ -37,9 +41,10 @@ class CustomerReservationController extends Controller
             'kost_id' => 'required|exists:kosts,id',
             'total' => 'required|integer|min:1',
             'start_date' => 'required|date|after_or_equal:today',
-        ]);        
-
+        ]);     
+    
         $reservation = Reservation::create([
+            'reservation_id' => Reservation::generateUniqueReservationId(),
             'user_id' => Auth::id(),
             'kost_id' => $request->kost_id,
             'total' => $request->total,
@@ -50,31 +55,37 @@ class CustomerReservationController extends Controller
         return redirect()->route('customer.reservations.index')->with('success', 'Reservasi berhasil dibuat.');
     }
 
+    public function getPayment($id) 
+    {
+        $reservation = Reservation::findOrFail($id);
+
+        return view('customer.reservations.payment', compact('reservation'));
+    }
+
     public function payment($id)
     {
         try {
-            $reservation = Reservation::findOrFail($id);
+            Log::info('Starting payment process for reservation ID:', [$id]);
 
-            // Cek apakah sudah ada pembayaran untuk reservasi ini
+            $reservation = Reservation::where('reservation_id', '=', $id)->firstOrFail();
+            Log::info('Reservation found:', [$reservation]);
+
             $payment = Payment::where('reservation_id', $reservation->id)->first();
+            Log::info('Payment record:', [$payment]);
 
             if ($payment) {
-                // Jika pembayaran sudah ada, gunakan token yang ada
                 $snapToken = $payment->token;
             } else {
-                // Jika belum ada pembayaran, buat token Snap baru
                 $user = Auth::user();
 
-                // Konfigurasi Midtrans menggunakan konfigurasi di config/services.php
                 Config::$serverKey = config('services.midtrans.server_key');
                 Config::$clientKey = config('services.midtrans.client_key');
                 Config::$isProduction = config('services.midtrans.production');
 
-                // Parameter transaksi untuk Midtrans
                 $params = [
                     'transaction_details' => [
-                        'order_id' => 'ORDER-' . $reservation->id,  // Pastikan order_id unik
-                        'gross_amount' => $reservation->total * $reservation->kost->harga,     // Total harga dari reservasi dikalikan harga kost
+                        'order_id' => $id,
+                        'gross_amount' => $reservation->total * $reservation->kost->harga,
                     ],
                     'customer_details' => [
                         'first_name' => $user->name,
@@ -82,22 +93,23 @@ class CustomerReservationController extends Controller
                     ],
                 ];
 
-                // Mendapatkan token Snap dari Midtrans
+                Log::info('Midtrans parameters:', [$params]);
+
                 $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-                // Membuat entri pembayaran baru di database
+                Log::info('Snap token generated:', [$snapToken]);
+
                 Payment::create([
                     'reservation_id' => $reservation->id,
                     'total' => $reservation->total * $reservation->kost->harga,
-                    'token' => $snapToken,  // Menyimpan token untuk pembayaran
+                    'token' => $snapToken,
                 ]);
             }
 
-            // Mengirimkan data untuk ditampilkan di view
             return view('customer.reservations.payment', compact('reservation', 'snapToken'));
-            
+
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan, arahkan kembali ke halaman reservasi dengan pesan error
+            Log::error('Error in payment process:', [$e->getMessage()]);
             return redirect()->route('customer.reservations.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -123,5 +135,52 @@ class CustomerReservationController extends Controller
         }
     }
 
+    public function invoice($reservationId)
+    {
+        try {
+            // Ambil reservasi berdasarkan ID
+            $reservation = Reservation::where('reservation_id', $reservationId)->firstOrFail();
+
+            // Ambil data pembayaran terkait
+            $payment = Payment::where('reservation_id', $reservation->id)->first();
+
+            // Pastikan reservasi sudah dibayar
+            if ($reservation->status != 'Dibayar') {
+                return redirect()->route('customer.reservations.index')->with('error', 'Reservasi belum dibayar.');
+            }
+
+            // Tampilkan invoice
+            return view('customer.reservations.invoice', compact('reservation', 'payment'));
+
+        } catch (\Exception $e) {
+            // Log error dan berikan pesan error
+            Log::error('Error showing invoice:', [$e->getMessage()]);
+            return redirect()->route('customer.reservations.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadInvoice($reservationId)
+    {
+        try {
+            // Ambil data reservasi dan pembayaran
+            $reservation = Reservation::where('reservation_id', $reservationId)->firstOrFail();
+            $payment = Payment::where('reservation_id', $reservation->id)->first();
+
+            // Pastikan reservasi sudah dibayar
+            if ($reservation->status != 'Dibayar') {
+                return redirect()->route('customer.reservations.index')->with('error', 'Reservasi belum dibayar.');
+            }
+
+            // Membuat view PDF
+            $pdf = PDF::loadView('customer.reservations.invoice-pdf', compact('reservation', 'payment'));
+
+            // Download PDF
+            return $pdf->download('INV-' . $reservation->reservation_id . '.pdf');
+
+        } catch (\Exception $e) {
+            Log::error('Error generating PDF:', [$e->getMessage()]);
+            return redirect()->route('customer.reservations.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }
 

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex w-full justify-between items-center">
             <div class="mt-2 mb-2">
-                <a href="{{ route('admin.kost.index') }}" class="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600">Kembali</a>
+                <a href="{{ route('kost.index') }}" class="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600">Kembali</a>
               </div>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Tambah Kost') }}
@@ -11,7 +11,7 @@
     </x-slot>
 
     <div class="p-12">
-        <form action="{{ route('admin.kost.store') }}" method="POST" enctype="multipart/form-data" class="p-5 bg-white rounded-xl shadow-lg">
+        <form action="{{ route('kost.store') }}" method="POST" enctype="multipart/form-data" class="p-5 bg-white rounded-xl shadow-lg">
             @csrf
             <x-input 
                 label="Nama Kost" 

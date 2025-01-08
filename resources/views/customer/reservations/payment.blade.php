@@ -19,9 +19,9 @@
             <h4 class="text-lg font-semibold text-gray-800">Pembayaran</h4>
             <p class="text-sm text-gray-500 mb-4">Klik tombol di bawah untuk melanjutkan pembayaran.</p>
 
-            <button id="pay-button" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 w-full">
+            <x-primary-button id="pay-button">
                 Bayar Sekarang
-            </button>
+            </x-primary-button>
         </div>
     </div>
 </div>
@@ -34,7 +34,7 @@
                 console.log(result);
                 alert('Pembayaran sukses!');
                 // Kirim permintaan API untuk memperbarui status
-                fetch('/reservations/' + {{ $reservation->id }} + '/status', {
+                fetch('/api/reservations/' + {{ $reservation->id }} + '/status', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

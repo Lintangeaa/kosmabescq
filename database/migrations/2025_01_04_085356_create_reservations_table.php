@@ -10,14 +10,16 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->string('reservation_id', 11);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('kost_id')->constrained('kosts');
             $table->decimal('total', 10, 2);
             $table->enum('status', ['Menunggu Pembayaran', 'Dibayar', 'Selesai']);
-            $table->date('tanggal_reservasi'); // Tambahkan kolom tanggal reservasi
+            $table->date('tanggal_reservasi');
             $table->timestamps();
         });
     }
+
 
     public function down()
     {
