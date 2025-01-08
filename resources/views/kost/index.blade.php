@@ -11,7 +11,9 @@
               <h1 class="text-lg font-semibold">Daftar Kost</h1>
           </div>
           <div class="mt-2 mb-2">
-            <a href="{{ route('kost.create') }}" class="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600">Tambah Kost</a>
+            @if(auth()->user()->isOwner())
+                <a href="{{ route('kost.create') }}" class="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600">Tambah Kost</a>
+            @endif
           </div>
           <table class="w-full table-auto border-collapse border border-gray-300">
               <thead class="bg-gray-200">
@@ -31,7 +33,9 @@
                           <td class="border px-4 py-2">{{ $kost->address->formatted_address }}</td>
                           <td class="border px-4 py-2">Rp{{ number_format($kost->harga, 2) }}</td>
                           <td class="border px-4 py-2 text-center">
-                              <a href="{{ route('kost.edit', $kost->id) }}" class="text-blue-500 hover:underline">Edit</a> |
+                            @if(auth()->user()->isOwner())
+                                <a href="{{ route('kost.edit', $kost->id) }}" class="text-blue-500 hover:underline">Edit</a> |
+                            @endif
                               <form action="{{ route('kost.destroy', $kost->id) }}" method="POST" class="inline">
                                   @csrf
                                   @method('DELETE')
