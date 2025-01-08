@@ -33,7 +33,7 @@ class Reservation extends Model
         }
 
         // Format nomor urut dengan 2 digit, misalnya 01, 02, dst.
-        return 'R' . $today . str_pad($newId, 2, '0', STR_PAD_LEFT);  // Hasil ID: RddmmyyyyNN
+        return 'O' . $today . str_pad($newId, 2, '0', STR_PAD_LEFT);  // Hasil ID: RddmmyyyyNN
     }
 
 
