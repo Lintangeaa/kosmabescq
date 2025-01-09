@@ -8,7 +8,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::put('/reservations/{id}/status', [CustomerReservationController::class, 'updateStatusToPaid'])
-    ->name('reservations.updateStatusToPaid');
+Route::put('/reservations/{id}/status', [CustomerReservationController::class, 'updateStatus'])
+    ->name('reservations.updateStatus');
 
 
