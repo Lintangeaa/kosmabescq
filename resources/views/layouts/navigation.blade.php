@@ -70,6 +70,12 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        @if (auth()->user()->isCustomer())
+                            <x-dropdown-link :href="route('customer.reservations.index')">
+                                {{ __('Reservasi') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
