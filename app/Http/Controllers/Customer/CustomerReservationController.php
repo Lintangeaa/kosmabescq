@@ -68,7 +68,7 @@ class CustomerReservationController extends Controller
             Log::info('Starting payment process for reservation ID:', [$id]);
 
             $reservation = Reservation::where('reservation_id', '=', $id)->firstOrFail();
-            Log::info('Reservation found:', [$reservation]);
+            Log::info('CONFIG:', [config('services.midtrans.server_key'), config('services.midtrans.client_key'), config('services.midtrans.is_production'), config('services.midtrans.url')]);
 
             $payment = Payment::where('reservation_id', $reservation->id)->first();
             Log::info('Payment record:', [$payment]);
@@ -80,7 +80,7 @@ class CustomerReservationController extends Controller
 
                 Config::$serverKey = config('services.midtrans.server_key');
                 Config::$clientKey = config('services.midtrans.client_key');
-                Config::$isProduction = config('services.midtrans.production');
+                Config::$isProduction = config('services.midtrans.is_production');
 
                 $params = [
                     'transaction_details' => [
@@ -114,13 +114,19 @@ class CustomerReservationController extends Controller
         }
     }
 
-    public function updateStatusToPaid(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
         try {
+            // Validasi input status
+            $request->validate([
+                'status' => 'required|in:Dibayar,Dibatalkan,Selesai', // Pastikan status yang diterima valid
+            ]);
+
+            // Cari reservation berdasarkan ID
             $reservation = Reservation::findOrFail($id);
 
-            // Update status pembayaran menjadi "dibayar"
-            $reservation->status = 'Dibayar';
+            // Perbarui status reservation sesuai dengan input dari request
+            $reservation->status = $request->status;
             $reservation->save();
 
             return response()->json([

@@ -36,9 +36,12 @@ return [
     ],
 
     'midtrans' => [
-        'server_key' => env('MIDTRANS_SERVER_KEY'),
-        'client_key' => env('MIDTRANS_CLIENT_KEY'),
-        'is_production' => env('MIDTRANS_PRODUCTION_MODE', false),
+        'server_key' => env('MIDTRANS_PRODUCTION_MODE', false) ? env('MIDTRANS_SERVER_KEY_PROD') : env('MIDTRANS_SERVER_KEY'),
+        'client_key' => env('MIDTRANS_PRODUCTION_MODE', false) ? env('MIDTRANS_CLIENT_KEY_PROD') : env('MIDTRANS_CLIENT_KEY'),
+        'is_production' => env('MIDTRANS_PRODUCTION_MODE', false) ? true : false,
+        'url' => env('MIDTRANS_PRODUCTION_MODE', false)
+        ? 'https://app.midtrans.com/snap/snap.js'
+        : 'https://app.sandbox.midtrans.com/snap/snap.js',
     ],
 
 ];

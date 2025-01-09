@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pembayaran Reservasi</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+    <script src="{{ config('services.midtrans.url') }}" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 </head>
 <body>
 
@@ -39,7 +39,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
+                    },
+                    body: JSON.stringify({
+                        'status': 'Dibayar'
+                    })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -59,6 +62,17 @@
             onError: function(result) {
                 console.error(result);
                 alert('Terjadi kesalahan dalam pembayaran.');
+                // Kirim permintaan API untuk memperbarui status
+                fetch('/api/reservations/' + {{ $reservation->id }} + '/status', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        'status': 'Dibatalkan'
+                    })
+                })
             }
         });
     });

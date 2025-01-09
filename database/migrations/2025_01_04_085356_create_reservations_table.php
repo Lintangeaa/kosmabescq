@@ -14,7 +14,7 @@ class CreateReservationsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('kost_id')->constrained('kosts');
             $table->decimal('total', 10, 2);
-            $table->enum('status', ['Menunggu Pembayaran', 'Dibayar', 'Selesai']);
+            $table->enum('status', ['Menunggu Pembayaran', 'Dibayar',  'Dibatalkan', 'Selesai']);
             $table->date('tanggal_reservasi');
             $table->timestamps();
         });
