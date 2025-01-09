@@ -5,7 +5,7 @@
 /public/storage
 /storage/*.key
 /storage/framework/
-/storage/framework/views
+/storage/framework/views/*.php
 /storage/logs
 /vendor
 .env

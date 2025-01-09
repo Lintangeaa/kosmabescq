@@ -19,9 +19,19 @@
             <h4 class="text-lg font-semibold text-gray-800">Pembayaran</h4>
             <p class="text-sm text-gray-500 mb-4">Klik tombol di bawah untuk melanjutkan pembayaran.</p>
 
-            <x-primary-button id="pay-button">
-                Bayar Sekarang
-            </x-primary-button>
+            @if($reservation->status == 'Menunggu Pembayaran')
+                <x-primary-button id="pay-button">
+                    Bayar Sekarang
+                </x-primary-button>
+            @elseif($reservation->status == 'Dibayar')
+                <p class="text-green-600 font-semibold">Pembayaran sudah dilakukan.</p>
+                <div class="mt-4">
+                    <a href="{{ route('customer.reservations.index') }}" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                        Lihat Reservasi
+                    </a>
+                </div>
+            @endif
+
         </div>
     </div>
 </div>
