@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('owner')->name('owner.')->group(function() {
         Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+        Route::put('/reservations/{reservation}/update-status', [ReservationController::class, 'updateStatus'])->name('reservations.update-status');
     });
 });
 

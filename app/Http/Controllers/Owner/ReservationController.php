@@ -18,4 +18,28 @@ class ReservationController extends Controller
 
         return view('owner.reservations.index', compact('reservations'));
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            // Validasi input status
+            $request->validate([
+                'status' => 'required|in:Dibayar,Dibatalkan,Selesai', // Pastikan status yang diterima valid
+            ]);
+
+            // Cari reservation berdasarkan ID
+            $reservation = Reservation::where('reservation_id', $id)->firstOrFail();
+
+            // Perbarui status reservation sesuai dengan input dari request
+            $reservation->status = $request->status;
+            $reservation->save();
+
+            return redirect()->route('owner.reservations.index')->with('success', 'Status reservasi berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
