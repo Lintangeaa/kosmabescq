@@ -118,9 +118,14 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
+               
+
+
+                @if (auth()->user()->isCustomer())
+                    <x-responsive-nav-link :href="route('customer.reservations.index')">
+                        {{ __('Reservasi') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
