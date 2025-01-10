@@ -1,7 +1,7 @@
 <x-app-layout>
   <main class="px-10 lg:px-40 mt-10">
     <!-- Form Pencarian -->
-    <form method="GET" action="{{ route('customer.kost.all') }}" class="mb-6 flex items-center space-x-2">
+    <form method="GET" action="{{ route('customer.kost.all') }}" class="mb-6">
       <x-input 
         name="query" 
         placeholder="Cari kos berdasarkan nama atau lokasi..." 
