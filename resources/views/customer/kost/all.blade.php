@@ -34,4 +34,5 @@
       @endforelse
     </div>
   </main>
+  <x-footer />
 </x-app-layout>
