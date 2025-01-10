@@ -11,30 +11,36 @@ class CustomerKostController extends Controller
 
     public function index()
     {
-        // Retrieve all Kost records with related address, user, and available rooms
+        // Retrieve all Kost records with related address, user, and reservations
         $kosts = Kost::with([
             'address',
             'user',
-            'reservations' => function($query) {
+            'reservations' => function ($query) {
                 $query->selectRaw('kost_id, SUM(total) as reserved_count')
                     ->groupBy('kost_id');
             }
         ])->get();
 
-        // Menghitung kamar tersedia dengan menggunakan optional untuk menghindari kesalahan null
+        // Menghitung kamar tersedia dan menambahkan reserved_count
         foreach ($kosts as $kost) {
             $reserved_count = optional($kost->reservations->first())->reserved_count ?? 0;
+            $kost->reserved_count = $reserved_count;
             $kost->kamar_tersedia = $kost->total_kamar - $reserved_count;
         }
+
+        // Sort Kos Populer: Berdasarkan reservasi terbanyak
+        $kosPopuler = $kosts->sortByDesc('reserved_count')->take(5);
+
+        // Sort Kos Kami: Berdasarkan sisa kamar terbanyak
+        $kosKami = $kosts->sortByDesc('kamar_tersedia')->take(8);
 
         // Jika pengguna adalah admin atau pemilik kost, redirect ke dashboard
         if (auth()->user()->isAdmin() || auth()->user()->isOwner()) {
             return redirect()->route('dashboard');
+        }else{
+            return view('customer.kost.index', compact('kosPopuler', 'kosKami'));
         }
-
-        return view('customer.kost.index', compact('kosts'));
     }
-
 
     public function show($id)
     {
