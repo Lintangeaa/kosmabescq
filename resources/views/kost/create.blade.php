@@ -106,6 +106,7 @@
                 <script>
                     tinymce.init({
                         selector: '#fasilitas',
+                        license_key: 'gpl',
                         plugins: 'image lists textalign',
                         toolbar: 'undo redo | bold italic | bullist numlist | alignleft aligncenter alignright | image',
                         image_resizing: true,
@@ -123,6 +124,7 @@
                 <script>
                     tinymce.init({
                         selector: '#informasi', 
+                        license_key: 'gpl',
                         plugins: 'image lists textalign',
                         toolbar: 'undo redo | bold italic | bullist numlist | alignleft aligncenter alignright | image',
                         image_resizing: true,

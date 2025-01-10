@@ -19,6 +19,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             tinymce.init({
                 selector: '#{{ $name }}', 
+                license_key: 'gpl',
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount code',
                 toolbar: 'blocks | bold italic underline | alignleft aligncenter alignjustify | numlist bullist | forecolor backcolor removeformat | pagebreak | insertfile image media template link | code',
                 valid_elements: '*[*]'

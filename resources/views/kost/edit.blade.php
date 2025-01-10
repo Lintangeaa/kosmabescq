@@ -121,6 +121,7 @@
                 <script>
                     tinymce.init({
                         selector: '#fasilitas',
+                        license_key: 'gpl',
                         plugins: 'image',
                         toolbar: 'image',
                         image_resizing: true,
@@ -137,6 +138,7 @@
                 <script>
                     tinymce.init({
                         selector: '#informasi', 
+                        license_key: 'gpl',
                         plugins: 'image',
                         toolbar: 'image',
                         image_resizing: true,
