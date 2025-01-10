@@ -4,7 +4,6 @@
       <div class="sticky top-0 h-20 bg-orange-200 flex justify-between items-center px-10 lg:px-40 z-20 shadow-md">
         <h1 class="text-xl uppercase font-extrabold text-ellipsis text-orange-700">Kosmabescq</h1>
         <div class="flex items-center space-x-6">
-          <i class="fa-solid fa-magnifying-glass text-xl hover:text-orange-700 cursor-pointer transition-all duration-300"></i>
           <a href="{{ route('customer.kost.all') }}" class="text-sm text-orange-600 hover:text-orange-700">Lihat Semua Kost</a>
         </div>
       </div>

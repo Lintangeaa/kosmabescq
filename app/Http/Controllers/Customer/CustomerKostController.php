@@ -44,9 +44,37 @@ class CustomerKostController extends Controller
         return view('customer.kost.show', compact('kost'));
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        $kosts = Kost::where('total_kamar', '>', 0)->get();
+        // Ambil input pencarian
+        $query = $request->input('query');
+
+        // Query dasar
+        $kosts = Kost::with(['reservations' => function ($query) {
+            $query->selectRaw('kost_id, SUM(total) as reserved_count')
+                ->groupBy('kost_id');
+        }]);
+
+        // Jika ada input pencarian, tambahkan filter
+        if ($query) {
+            $kosts->where('nama', 'like', "%{$query}%")
+                ->orWhereHas('address', function ($q) use ($query) {
+                    $q->where('provinsi', 'like', "%{$query}%")
+                        ->orWhere('kota', 'like', "%{$query}%")
+                        ->orWhere('kecamatan', 'like', "%{$query}%")
+                        ->orWhere('desa', 'like', "%{$query}%");
+                });
+        }
+
+        $kosts = $kosts->get();
+
+        // Hitung kamar tersedia
+        foreach ($kosts as $kost) {
+            $reserved_count = optional($kost->reservations->first())->reserved_count ?? 0;
+            $kost->kamar_tersedia = $kost->total_kamar - $reserved_count;
+        }
+
         return view('customer.kost.all', compact('kosts'));
     }
+
 }

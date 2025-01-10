@@ -13,7 +13,7 @@
     <div class="p-12">
         <form action="{{ route('kost.update', $kost->id) }}" method="POST" enctype="multipart/form-data" class="p-5 bg-white rounded-xl shadow-lg">
             @csrf
-            @method('PUT') <!-- Add method spoofing for PUT request -->
+            @method('PUT')
             
             <x-input 
                 label="Nama Kost" 
@@ -81,6 +81,21 @@
                 :messages="$errors->get('total_kamar')" 
                 required 
             />
+
+            <div class="mb-4">
+                <label for="aktif" class="block text-sm font-medium text-gray-700">Status Aktif</label>
+                <select 
+                    name="aktif" 
+                    id="aktif" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    required>
+                    <option value="1" {{ old('aktif', $kost->aktif) == 1 ? 'selected' : '' }}>Aktif</option>
+                    <option value="0" {{ old('aktif', $kost->aktif) == 0 ? 'selected' : '' }}>Tidak Aktif</option>
+                </select>
+                @error('aktif')
+                    <p class="text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>            
 
             <div class="mb-4">
                 <label for="image" class="block text-sm font-medium text-gray-700">Foto Utama</label>
