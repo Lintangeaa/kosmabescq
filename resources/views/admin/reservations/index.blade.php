@@ -10,6 +10,14 @@
         <div class="mb-6 bg-gray-100 p-4 rounded-lg shadow-md">
             <p class="font-semibold text-lg text-gray-700 mb-2">Keterangan:</p>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Menunggu Pembayaran -->
+                <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 rounded-full bg-yellow-500"></span>
+                    <div>
+                        <span class="text-gray-700">Menunggu Pembayaran</span>
+                        <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari customer.</p>
+                    </div>
+                </div>
                 <!-- Dibayar -->
                 <div class="flex items-center space-x-2">
                     <span class="w-4 h-4 rounded-full bg-blue-600"></span>
@@ -24,14 +32,6 @@
                     <div>
                         <span class="text-gray-700">Selesai</span>
                         <p class="text-sm text-gray-600">Semua proses selesai dan customer sudah menempati kost.</p>
-                    </div>
-                </div>
-                <!-- Diproses -->
-                <div class="flex items-center space-x-2">
-                    <span class="w-4 h-4 rounded-full bg-purple-600"></span>
-                    <div>
-                        <span class="text-gray-700">Menunggu Pembayaran</span>
-                        <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari customer.</p>
                     </div>
                 </div>
                 <!-- Batal -->
@@ -74,10 +74,10 @@
                                 <td class="px-4 py-2 border-b">
                                     <!-- Status dengan warna yang berbeda -->
                                     <span class="px-2 py-1 rounded-full text-white
-                                        @if($reservation->status == 'Dibayar') bg-blue-600 
-                                        @elseif($reservation->status == 'Selesai') bg-green-600 
-                                        @elseif($reservation->status == 'Menunggu Pembayaran') bg-purple-600
-                                        @elseif($reservation->status == 'Dibatalkan') bg-red-600 
+                                        @if($reservation->status == 'Menunggu Pembayaran') bg-yellow-500
+                                        @elseif($reservation->status == 'Dibayar') bg-blue-600
+                                        @elseif($reservation->status == 'Selesai') bg-green-600
+                                        @elseif($reservation->status == 'Dibatalkan') bg-red-600
                                         @endif">
                                         {{ $reservation->status }}
                                     </span>
