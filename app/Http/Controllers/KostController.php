@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Kost;
+use App\Models\Payment;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -13,13 +15,13 @@ class KostController extends Controller
     public function index()
     {
         $kosts = Kost::with('address')->paginate(10);
-        return view('kost.index', compact('kosts'));
+        return view('admin.kost.index', compact('kosts'));
     }
 
     public function create()
     {
         $addresses = Address::all();
-        return view('kost.create', compact('addresses'));
+        return view('admin.kost.create', compact('addresses'));
     }
 
     public function store(Request $request)
@@ -79,7 +81,7 @@ class KostController extends Controller
 
         Kost::create($kostData);
 
-        return redirect()->route('kost.index')->with('success', 'Kost berhasil ditambahkan.');
+        return redirect()->route('admin.kost.index')->with('success', 'Kost berhasil ditambahkan.');
     }
 
     public function show(Kost $kost)
@@ -90,7 +92,7 @@ class KostController extends Controller
     public function edit(Kost $kost)
     {
         $addresses = Address::all();
-        return view('kost.edit', compact('kost', 'addresses'));
+        return view('admin.kost.edit', compact('kost', 'addresses'));
     }
 
     public function update(Request $request, Kost $kost)
@@ -105,6 +107,7 @@ class KostController extends Controller
                 'kecamatan' => 'required|string|max:255',
                 'desa' => 'required|string|max:255',
                 'alamat_lengkap' => 'required|string',
+                'gmap' => 'required|string',
                 'harga' => 'required|numeric|min:0',
                 'fasilitas' => 'required|string',
                 'informasi' => 'required|string',
@@ -150,9 +153,10 @@ class KostController extends Controller
                 'informasi' => $validated['informasi'],
                 'total_kamar' => $validated['total_kamar'],
                 'alamat_lengkap' => $validated['alamat_lengkap'],
+                'gmap' => $validated['gmap'],
             ]);
 
-            return redirect()->route('kost.index')->with('success', 'Kost berhasil diperbarui.');
+            return redirect()->route('admin.kost.index')->with('success', 'Kost berhasil diperbarui.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Log error validasi
             Log::error('Validasi gagal saat memperbarui kost', [
@@ -179,8 +183,16 @@ class KostController extends Controller
 
     public function destroy(Kost $kost)
     {
+        // Menghapus semua pembayaran yang terkait dengan reservasi yang berkaitan dengan Kost
+        Payment::whereIn('reservation_id', Reservation::where('kost_id', $kost->id)->pluck('id'))->delete();
+        
+        // Menghapus semua reservasi yang terkait dengan Kost
+        Reservation::where('kost_id', $kost->id)->delete();
+    
+        // Menghapus Kost
         $kost->delete();
-
-        return redirect()->route('kost.index')->with('success', 'Kost berhasil dihapus.');
-    }
+    
+        // Redirect ke halaman daftar Kost dengan pesan sukses
+        return redirect()->route('admin.kost.index')->with('success', 'Kost berhasil dihapus.');
+    }    
 }

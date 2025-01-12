@@ -12,37 +12,28 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    {{-- Link Dashboard --}}
-                    @if (auth()->user()->isAdmin() || auth()->user()->isOwner())
+                    @if (auth()->user()->isAdmin())
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                    @elseif (auth()->user()->isCustomer())
-                        <x-nav-link :href="route('customer.kost.index')" :active="request()->routeIs('customer.kost.index')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                    @endif
-                
-                    {{-- Link Kost --}}
-                    @if (auth()->user()->isAdmin())
+
                         <x-nav-link :href="route('admin.user.index')" :active="request()->routeIs('admin.user.index')">
                             {{ __('Users') }}
                         </x-nav-link>
-                    @endif
 
-                    @if (auth()->user()->isAdmin() || auth()->user()->isOwner())
-                        <x-nav-link :href="route('kost.index')" :active="request()->routeIs('kost.index', 'kost.create', 'kost.edit')">
+                        <x-nav-link :href="route('admin.kost.index')" :active="request()->routeIs('admin.kost.index', 'admin.kost.create', 'admin.kost.edit')">
                             {{ __('Kos') }}
                         </x-nav-link>
-                    @endif
 
-                    @if (auth()->user()->isOwner())
-                        <x-nav-link :href="route('owner.reservations.index')" :active="request()->routeIs('owner.reservations.index')">
+                        <x-nav-link :href="route('admin.reservations.index')" :active="request()->routeIs('admin.reservations.index')">
                             {{ __('Reservasi') }}
                         </x-nav-link>
                     @endif
-
                     @if (auth()->user()->isCustomer())
+                        <x-nav-link :href="route('customer.kost.index')" :active="request()->routeIs('customer.kost.index')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+
                         <x-nav-link :href="route('customer.reservations.index')" :active="request()->routeIs('customer.reservations.index')">
                             {{ __('Reservasi') }}
                         </x-nav-link>
@@ -105,9 +96,15 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            @if(auth()->user()->isAdmin())
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('customer.kost.index')" :active="request()->routeIs('customer.kost.index')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -118,9 +115,6 @@
             </div>
 
             <div class="mt-3 space-y-1">
-               
-
-
                 @if (auth()->user()->isCustomer())
                     <x-responsive-nav-link :href="route('customer.reservations.index')">
                         {{ __('Reservasi') }}

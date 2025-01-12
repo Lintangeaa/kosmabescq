@@ -6,7 +6,7 @@ use App\Http\Controllers\Customer\CustomerKostController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Customer\CustomerReservationController;
 use App\Http\Controllers\KostController;
-use App\Http\Controllers\Owner\ReservationController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -21,15 +21,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Menambahkan nama pada resource route admin/kost dan admin/user
-    Route::resource('manage/kost', KostController::class)->names([
-        'index' => 'kost.index',
-        'create' => 'kost.create',
-        'store' => 'kost.store',
-        'show' => 'kost.show',
-        'edit' => 'kost.edit',
-        'update' => 'kost.update',
-        'destroy' => 'kost.destroy',
+    Route::resource('admin/kost', KostController::class)->names([
+        'index' => 'admin.kost.index',
+        'create' => 'admin.kost.create',
+        'store' => 'admin.kost.store',
+        'show' => 'admin.kost.show',
+        'edit' => 'admin.kost.edit',
+        'update' => 'admin.kost.update',
+        'destroy' => 'admin.kost.destroy',
     ]);
 
     Route::resource('admin/user', AdminUserController::class)->names([
@@ -56,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservations/{reservation}/invoice', [CustomerReservationController::class, 'invoice'])->name('customer.reservations.invoice');
     Route::get('/reservations/{reservation}/download-invoice', [CustomerReservationController::class, 'downloadInvoice'])->name('customer.reservations.downloadInvoice');
 
-    Route::prefix('owner')->name('owner.')->group(function() {
+    Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
         Route::put('/reservations/{reservation}/update-status', [ReservationController::class, 'updateStatus'])->name('reservations.update-status');
     });
