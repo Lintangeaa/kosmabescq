@@ -76,8 +76,8 @@
                                     <span class="px-2 py-1 rounded-full text-white
                                         @if($reservation->status == 'Dibayar') bg-blue-600 
                                         @elseif($reservation->status == 'Selesai') bg-green-600 
-                                        @elseif($reservation->status == 'Diproses') bg-orange-600
-                                        @elseif($reservation->status == 'Batal') bg-red-600 
+                                        @elseif($reservation->status == 'Menunggu Pembayaran') bg-orange-600
+                                        @elseif($reservation->status == 'Dibatalkan') bg-red-600 
                                         @endif">
                                         {{ $reservation->status }}
                                     </span>
