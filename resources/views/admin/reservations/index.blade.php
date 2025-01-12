@@ -12,7 +12,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Menunggu Pembayaran -->
                 <div class="flex items-center space-x-2">
-                    <span class="w-4 h-4 rounded-full bg-yellow-500"></span>
+                    <span class="w-4 h-4 rounded-full bg-green-600"></span>
                     <div>
                         <span class="text-gray-700">Menunggu Pembayaran</span>
                         <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari customer.</p>
