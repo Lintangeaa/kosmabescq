@@ -12,7 +12,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Menunggu Pembayaran -->
                 <div class="flex items-center space-x-2">
-                    <span class="w-4 h-4 rounded-full bg-indigo-600"></span>
+                    <span class="w-4 h-4 rounded-full  bg-red-600/50"></span>
                     <div>
                         <span class="text-gray-700">Menunggu Pembayaran</span>
                         <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari customer.</p>
@@ -74,7 +74,7 @@
                                 <td class="px-4 py-2 border-b">
                                     <!-- Status dengan warna yang berbeda -->
                                     <span class="px-2 py-1 rounded-full text-white
-                                        @if($reservation->status == 'Menunggu Pembayaran') bg-indigo-600
+                                        @if($reservation->status == 'Menunggu Pembayaran') bg-red-600/50
                                         @elseif($reservation->status == 'Dibayar') bg-blue-600
                                         @elseif($reservation->status == 'Selesai') bg-green-600
                                         @elseif($reservation->status == 'Dibatalkan') bg-red-600
