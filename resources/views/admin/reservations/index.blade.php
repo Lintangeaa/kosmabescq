@@ -28,7 +28,7 @@
                 </div>
                 <!-- Diproses -->
                 <div class="flex items-center space-x-2">
-                    <span class="w-4 h-4 rounded-full bg-yellow-600"></span>
+                    <span class="w-4 h-4 rounded-full bg-yellow-700"></span>
                     <div>
                         <span class="text-gray-700">Menunggu Pembayaran</span>
                         <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari customer.</p>
@@ -76,7 +76,7 @@
                                     <span class="px-2 py-1 rounded-full text-white
                                         @if($reservation->status == 'Dibayar') bg-blue-600 
                                         @elseif($reservation->status == 'Selesai') bg-green-600 
-                                        @elseif($reservation->status == 'Diproses') bg-yellow-600 
+                                        @elseif($reservation->status == 'Diproses') bg-yellow-700 
                                         @elseif($reservation->status == 'Batal') bg-red-600 
                                         @endif">
                                         {{ $reservation->status }}
