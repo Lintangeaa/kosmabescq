@@ -23,7 +23,7 @@
     <div class="p-12">
         <form action="<?php echo e(route('kost.update', $kost->id)); ?>" method="POST" enctype="multipart/form-data" class="p-5 bg-white rounded-xl shadow-lg">
             <?php echo csrf_field(); ?>
-            <?php echo method_field('PUT'); ?> <!-- Add method spoofing for PUT request -->
+            <?php echo method_field('PUT'); ?>
             
             <?php if (isset($component)) { $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $attributes; } ?>
@@ -187,6 +187,28 @@
 <?php $component = $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1; ?>
 <?php unset($__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1); ?>
 <?php endif; ?>
+
+            <div class="mb-4">
+                <label for="aktif" class="block text-sm font-medium text-gray-700">Status Aktif</label>
+                <select 
+                    name="aktif" 
+                    id="aktif" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    required>
+                    <option value="1" <?php echo e(old('aktif', $kost->aktif) == 1 ? 'selected' : ''); ?>>Aktif</option>
+                    <option value="0" <?php echo e(old('aktif', $kost->aktif) == 0 ? 'selected' : ''); ?>>Tidak Aktif</option>
+                </select>
+                <?php $__errorArgs = ['aktif'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <p class="text-sm text-red-600"><?php echo e($message); ?></p>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>            
 
             <div class="mb-4">
                 <label for="image" class="block text-sm font-medium text-gray-700">Foto Utama</label>

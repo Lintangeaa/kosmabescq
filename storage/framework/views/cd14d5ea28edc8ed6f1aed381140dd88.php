@@ -31,6 +31,7 @@
                             <th class="px-4 py-2 border-b text-left">Tanggal Mulai</th>
                             <th class="px-4 py-2 border-b text-left">Total Bulan</th>
                             <th class="px-4 py-2 border-b text-left">Status</th>
+                            <th class="px-4 py-2 border-b text-left">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,19 @@
                                 <td class="px-4 py-2 border-b"><?php echo e($reservation->tanggal_reservasi); ?></td>
                                 <td class="px-4 py-2 border-b"><?php echo e(floor($reservation->total)); ?> Bulan</td>
                                 <td class="px-4 py-2 border-b"><?php echo e($reservation->status); ?></td>
+                                <td class="px-4 py-2 border-b">
+                                   <?php if($reservation->status == 'Dibayar'): ?>
+                                    <form action="<?php echo e(route('owner.reservations.update-status', $reservation->reservation_id)); ?>" method="POST" class="inline">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('PUT'); ?>
+
+                                        <input type="hidden" name="status" value="Selesai">
+                                
+                                        <!-- Tombol untuk mengubah status menjadi Selesai -->
+                                        <button type="submit" class="text-green-500 hover:underline ml-4" onclick="return confirm('Yakin ingin menyelesaikan reservasi?')">Selesaikan</button>
+                                    </form>
+                                    <?php endif; ?>
+                                </td>                                
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>

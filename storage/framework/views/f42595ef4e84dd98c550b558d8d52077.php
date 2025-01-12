@@ -231,6 +231,7 @@ unset($__errorArgs, $__bag); ?>
                 <script>
                     tinymce.init({
                         selector: '#fasilitas',
+                        license_key: 'gpl',
                         plugins: 'image lists textalign',
                         toolbar: 'undo redo | bold italic | bullist numlist | alignleft aligncenter alignright | image',
                         image_resizing: true,
@@ -248,6 +249,7 @@ unset($__errorArgs, $__bag); ?>
                 <script>
                     tinymce.init({
                         selector: '#informasi', 
+                        license_key: 'gpl',
                         plugins: 'image lists textalign',
                         toolbar: 'undo redo | bold italic | bullist numlist | alignleft aligncenter alignright | image',
                         image_resizing: true,

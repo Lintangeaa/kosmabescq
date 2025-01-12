@@ -18,7 +18,7 @@
   <div class="p-12">
       <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <h3 class="text-2xl font-semibold text-gray-800">Invoice untuk <?php echo e($reservation->kost->nama); ?></h3>
-          <p class="text-gray-600 mt-2">ID Reservasi: <span class="font-medium text-gray-800"><?php echo e($reservation->id); ?></span></p>
+          <p class="text-gray-600 mt-2">ID Reservasi: <span class="font-medium text-gray-800"><?php echo e($reservation->reservation_id); ?></span></p>
           <p class="text-gray-600 mt-1">Tanggal Mulai: <span class="font-medium text-gray-800"><?php echo e($reservation->tanggal_reservasi); ?></span></p>
           <p class="text-gray-600 mt-1">Total Bulan: <span class="font-medium text-gray-800"><?php echo e(floor($reservation->total)); ?> Bulan</span></p>
           <p class="text-gray-600 mt-1">Status: <span class="font-medium text-gray-800"><?php echo e($reservation->status); ?></span></p>

@@ -24,13 +24,33 @@
         <?php else: ?>
             <div class="overflow-x-auto sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php $__currentLoopData = $reservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reservation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300
+                    <?php if($reservation->status == 'Dibatalkan'): ?> bg-red-100 border-red-300 <?php elseif($reservation->status == 'Selesai'): ?> bg-green-100 border-green-300 <?php endif; ?>
+                ">
                     <h3 class="text-xl font-semibold text-gray-800"><?php echo e($reservation->kost->nama); ?></h3>
-                    <p class="text-gray-600 mt-2">ID Reservasi: <span class="font-medium text-gray-800"><?php echo e($reservation->id); ?></span></p>
+                    <p class="text-gray-600 mt-2">ID Reservasi: <span class="font-medium text-gray-800"><?php echo e($reservation->reservation_id); ?></span></p>
                     <p class="text-gray-600 mt-1">Tanggal Mulai: <span class="font-medium text-gray-800"><?php echo e($reservation->tanggal_reservasi); ?></span></p>
                     <p class="text-gray-600 mt-1">Total Bulan: <span class="font-medium text-gray-800"><?php echo e(floor($reservation->total)); ?> Bulan</span></p>
-                    <p class="text-gray-600 mt-1">Status: <span class="font-medium text-gray-800"><?php echo e($reservation->status); ?></span></p>
-                
+                    
+                    <!-- Status Section -->
+                    <p class="text-gray-600 mt-1">
+                        Status: 
+                        <span class="font-medium 
+                            <?php if($reservation->status == 'Dibatalkan'): ?>
+                                text-red-600
+                            <?php elseif($reservation->status == 'Dibayar'): ?>
+                                text-green-600
+                            <?php elseif($reservation->status == 'Menunggu Pembayaran'): ?>
+                                text-yellow-600
+                            <?php elseif($reservation->status == 'Selesai'): ?>
+                                text-blue-600
+                            <?php endif; ?>
+                        ">
+                            <?php echo e($reservation->status); ?>
+
+                        </span>
+                    </p>
+
                     <?php if($reservation->status == 'Menunggu Pembayaran'): ?>
                         <div class="mt-4 text-center">
                             <a href="<?php echo e(route('customer.reservations.payment', $reservation->reservation_id)); ?>" class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
@@ -42,6 +62,11 @@
                             <a href="<?php echo e(route('customer.reservations.invoice', $reservation->reservation_id)); ?>" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 Lihat Invoice
                             </a>
+                        </div>
+                    <?php elseif($reservation->status == 'Dibatalkan'): ?>
+                        <!-- Jika status Dibatalkan, tampilkan label merah dan tidak ada tombol -->
+                        <div class="mt-4 text-center">
+                            <span class="text-red-600 font-semibold">Reservasi Dibatalkan</span>
                         </div>
                     <?php endif; ?>
                 </div>

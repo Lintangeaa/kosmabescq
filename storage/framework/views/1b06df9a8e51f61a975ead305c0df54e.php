@@ -41,7 +41,7 @@
                           <td class="border px-4 py-2"><?php echo e($kost->address->formatted_address); ?></td>
                           <td class="border px-4 py-2">Rp<?php echo e(number_format($kost->harga, 2)); ?></td>
                           <td class="border px-4 py-2 text-center">
-                              <a href="<?php echo e(route('admin.kost.edit', $kost->id)); ?>" class="text-blue-500 hover:underline">Edit</a> |
+                                <a href="<?php echo e(route('admin.kost.edit', $kost->id)); ?>" class="text-blue-500 hover:underline">Edit</a> |
                               <form action="<?php echo e(route('admin.kost.destroy', $kost->id)); ?>" method="POST" class="inline">
                                   <?php echo csrf_field(); ?>
                                   <?php echo method_field('DELETE'); ?>

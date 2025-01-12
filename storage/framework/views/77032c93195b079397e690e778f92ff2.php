@@ -13,7 +13,6 @@
       <div class="sticky top-0 h-20 bg-orange-200 flex justify-between items-center px-10 lg:px-40 z-20 shadow-md">
         <h1 class="text-xl uppercase font-extrabold text-ellipsis text-orange-700">Kosmabescq</h1>
         <div class="flex items-center space-x-6">
-          <i class="fa-solid fa-magnifying-glass text-xl hover:text-orange-700 cursor-pointer transition-all duration-300"></i>
           <a href="<?php echo e(route('customer.kost.all')); ?>" class="text-sm text-orange-600 hover:text-orange-700">Lihat Semua Kost</a>
         </div>
       </div>
@@ -28,80 +27,72 @@
           </div>
         </div>
   
-        <!-- Populer Section -->
+        <!-- Kos Populer Section -->
         <section class="py-8" id="populer">
-          <h1 class="text-2xl font-semibold text-gray-800">Paling <span class="text-orange-500">Populer</span> dan Paling <span class="text-orange-500">Dicari</span></h1>
+          <h1 class="text-2xl font-semibold text-gray-800">
+            Paling <span class="text-orange-500">Populer</span> dan Paling <span class="text-orange-500">Dicari</span>
+          </h1>
           <div class="swiper-container mt-5">
             <div class="swiper-wrapper">
-              <?php $__currentLoopData = $kosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kost): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php if($kost->kamar_tersedia > 0): ?>
-                  <a href="<?php echo e(route('customer.kost.show', $kost->id)); ?>" class="swiper-slide hover:-translate-y-2 transition-all duration-300">
-                    <div class="w-48 bg-orange-100 h-56 rounded-xl p-2 hover:shadow-lg">
-                      <img src="<?php echo e(asset('storage/'.$kost->image)); ?>" class="h-32 w-full rounded-xl object-cover" alt="<?php echo e($kost->nama); ?>">
-                      <div class="py-2">
-                        <h1 class="text-md font-semibold"><?php echo e($kost->nama); ?></h1>
-                        <span class="text-xs text-orange-600">Rp. <?php echo e(number_format($kost->harga, 0, ',', '.')); ?> /bulan</span>
-                        <span class="block text-sm text-gray-600">Kamar Tersedia: <?php echo e($kost->kamar_tersedia); ?></span>
-                      </div>
-                    </div>
-                  </a>
-                <?php endif; ?>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </div>
-          </div>
-        </section>
-  
-        <!-- Kos Section -->
-        <section class="py-8" id="hotel">
-          <h2 class="text-2xl font-bold text-gray-800 mb-4">Kos Kami</h2>
-          <p class="mb-4 text-gray-600">Temukan kenyamanan di berbagai pilihan kos terbaik yang tersedia, dengan fasilitas modern dan harga yang terjangkau.</p>
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <?php $__currentLoopData = $kosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kost): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <?php if($kost->kamar_tersedia > 0): ?>
-                <a href="<?php echo e(route('customer.kost.show', $kost->id)); ?>">
-                  <div class="h-full hover:bg-orange-200 p-2 rounded-lg transition-all duration-300 border border-orange-200">
-                    <img src="<?php echo e(asset('storage/'.$kost->image)); ?>" alt="<?php echo e($kost->nama); ?>" class="h-32 w-full rounded-lg object-cover">
+              <?php $__currentLoopData = $kosPopuler; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kost): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e(route('customer.kost.show', $kost->id)); ?>" class="swiper-slide hover:-translate-y-2 transition-all duration-300">
+                  <div class="w-48 bg-orange-100 h-56 rounded-xl p-2 hover:shadow-lg">
+                    <img src="<?php echo e(asset('storage/'.$kost->image)); ?>" class="h-32 w-full rounded-xl object-cover" alt="<?php echo e($kost->nama); ?>">
                     <div class="py-2">
-                      <h1 class="text-xs font-semibold text-gray-800"><?php echo e($kost->nama); ?></h1>
-                      <p class="text-xs text-gray-600"><?php echo e($kost->address->formatted_address); ?></p>
+                      <h1 class="text-md font-semibold"><?php echo e($kost->nama); ?></h1>
                       <span class="text-xs text-orange-600">Rp. <?php echo e(number_format($kost->harga, 0, ',', '.')); ?> /bulan</span>
                       <span class="block text-xs text-gray-600">Kamar Tersedia: <?php echo e($kost->kamar_tersedia); ?></span>
                     </div>
                   </div>
                 </a>
-              <?php endif; ?>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+          </div>
+        </section>
+  
+        <!-- Kos Kami Section -->
+        <section class="py-8" id="hotel">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">Kos Kami</h2>
+          <p class="mb-4 text-gray-600">Temukan kenyamanan di berbagai pilihan kos terbaik yang tersedia, dengan fasilitas modern dan harga yang terjangkau.</p>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <?php $__currentLoopData = $kosKami; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kost): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <a href="<?php echo e(route('customer.kost.show', $kost->id)); ?>">
+                <div class="h-full hover:bg-orange-200 p-2 rounded-lg transition-all duration-300 border border-orange-200">
+                  <img src="<?php echo e(asset('storage/'.$kost->image)); ?>" alt="<?php echo e($kost->nama); ?>" class="h-32 w-full rounded-lg object-cover">
+                  <div class="py-2">
+                    <h1 class="text-xs font-semibold text-gray-800"><?php echo e($kost->nama); ?></h1>
+                    <p class="text-xs text-gray-600"><?php echo e($kost->address->formatted_address); ?></p>
+                    <span class="text-xs text-orange-600">Rp. <?php echo e(number_format($kost->harga, 0, ',', '.')); ?> /bulan</span>
+                    <span class="block text-xs text-gray-600">Kamar Tersedia: <?php echo e($kost->kamar_tersedia); ?></span>
+                  </div>
+                </div>
+              </a>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
           <a href="<?php echo e(route('customer.kost.all')); ?>" class="text-orange-500 hover:underline mt-5">Lihat lebih banyak Kos</a>
         </section>
       </main>
   
-      <!-- Footer -->
-      <footer class="bg-gray-800 text-white py-8 mt-10">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div class="mb-4 md:mb-0">
-            <h3 class="text-xl font-bold text-orange-400 mb-2">Kosmabescq</h3>
-            <p class="text-gray-400">Menawarkan pengalaman menginap yang tak terlupakan dengan berbagai pilihan akomodasi yang nyaman dan elegan.</p>
-          </div>
-          <div class="flex space-x-4">
-            <a href="https://facebook.com" class="text-gray-400 hover:text-white" aria-label="Facebook">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://twitter.com" class="text-gray-400 hover:text-white" aria-label="Twitter">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://instagram.com" class="text-gray-400 hover:text-white" aria-label="Instagram">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://linkedin.com" class="text-gray-400 hover:text-white" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-          </div>
-        </div>
-        <div class="text-center mt-6 border-t border-gray-700 pt-4">
-          <p class="text-gray-400 text-sm">&copy; <?php echo e(date('Y')); ?> Kosmabescq. All rights reserved.</p>
-        </div>
-      </footer>
+      <?php if (isset($component)) { $__componentOriginal8a8716efb3c62a45938aca52e78e0322 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8a8716efb3c62a45938aca52e78e0322 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.footer','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('footer'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8a8716efb3c62a45938aca52e78e0322)): ?>
+<?php $attributes = $__attributesOriginal8a8716efb3c62a45938aca52e78e0322; ?>
+<?php unset($__attributesOriginal8a8716efb3c62a45938aca52e78e0322); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8a8716efb3c62a45938aca52e78e0322)): ?>
+<?php $component = $__componentOriginal8a8716efb3c62a45938aca52e78e0322; ?>
+<?php unset($__componentOriginal8a8716efb3c62a45938aca52e78e0322); ?>
+<?php endif; ?>
     </body>
    <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
