@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class KostController extends Controller
 {
@@ -132,16 +133,26 @@ class KostController extends Controller
             }
 
             // Handle image upload
+
+            // if ($request->hasFile('image')) {
+            //     // Hapus gambar lama jika ada
+            //     if ($kost->image && Storage::disk('public')->exists($kost->image)) {
+            //         Storage::disk('public')->delete($kost->image);
+            //     }
+
+            //     // Simpan gambar baru
+            //     $imagePath = $request->file('image')->store('kost_images', 'public');
+            //     $kost->image = $imagePath;
+            // }
+
+            
             if ($request->hasFile('image')) {
-                // Hapus gambar lama jika ada
                 if ($kost->image && Storage::disk('public')->exists($kost->image)) {
                     Storage::disk('public')->delete($kost->image);
                 }
-
-                // Simpan gambar baru
-                $imagePath = $request->file('image')->store('kost_images', 'public');
-                $kost->image = $imagePath;
+                $kost->image = $request->file('image')->store('kost_images', 'public');
             }
+            
 
             // Update data kost
             $kost->update([

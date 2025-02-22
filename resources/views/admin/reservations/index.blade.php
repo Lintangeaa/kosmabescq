@@ -15,7 +15,8 @@
                     <span class="w-4 h-4 rounded-full  bg-red-600"></span>
                     <div>
                         <span class="text-gray-700">Menunggu Pembayaran</span>
-                        <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari customer.</p>
+                        <p class="text-sm text-gray-600">Reservasi sedang dalam proses dan menunggu pembayaran dari
+                            customer.</p>
                     </div>
                 </div>
                 <!-- Dibayar -->
@@ -45,7 +46,7 @@
             </div>
         </div>
 
-        @if($reservations->isEmpty())
+        @if ($reservations->isEmpty())
             <div class="text-center">
                 <p class="text-gray-600">Tidak ada reservasi untuk kos Anda.</p>
             </div>
@@ -60,11 +61,10 @@
                             <th class="px-4 py-2 border-b text-left">Tanggal Mulai</th>
                             <th class="px-4 py-2 border-b text-left">Total Bulan</th>
                             <th class="px-4 py-2 border-b text-left">Status</th>
-                            <th class="px-4 py-2 border-b text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($reservations as $reservation)
+                        @foreach ($reservations as $reservation)
                             <tr>
                                 <td class="px-4 py-2 border-b">{{ $reservation->reservation_id }}</td>
                                 <td class="px-4 py-2 border-b">{{ $reservation->kost->nama }}</td>
@@ -73,32 +73,34 @@
                                 <td class="px-4 py-2 border-b">{{ floor($reservation->total) }} Bulan</td>
                                 <td class="px-4 py-2 border-b">
                                     <!-- Status dengan warna yang berbeda -->
-                                    <span class="px-2 py-1 rounded-full text-white
-                                        @if($reservation->status == 'Menunggu Pembayaran') bg-red-600
+                                    <span
+                                        class="px-2 py-1 rounded-full text-white
+                                        @if ($reservation->status == 'Menunggu Pembayaran') bg-red-600
                                         @elseif($reservation->status == 'Dibayar') bg-blue-600
                                         @elseif($reservation->status == 'Selesai') bg-green-600
-                                        @elseif($reservation->status == 'Dibatalkan') bg-red-600
-                                        @endif">
+                                        @elseif($reservation->status == 'Dibatalkan') bg-red-600 @endif">
                                         {{ $reservation->status }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-2 border-b text-center">
-                                    @if($reservation->status == 'Dibayar')
-                                        <form action="{{ route('admin.reservations.update-status', $reservation->reservation_id) }}" method="POST" class="inline">
+                                    @if ($reservation->status == 'Dibayar')
+                                        <form
+                                            action="{{ route('admin.reservations.update-status', $reservation->reservation_id) }}"
+                                            method="POST" class="inline">
                                             @csrf
                                             @method('PUT')
-                                
+
                                             <input type="hidden" name="status" value="Selesai">
-                                            
+
                                             <!-- Tombol untuk mengubah status menjadi Selesai -->
-                                            <button type="submit" 
-                                                    class="bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 py-1 px-3 text-sm rounded-md transition duration-200 transform hover:scale-105"
-                                                    onclick="return confirm('Yakin ingin menyelesaikan reservasi?')">
+                                            <button type="submit"
+                                                class="bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 py-1 px-3 text-sm rounded-md transition duration-200 transform hover:scale-105"
+                                                onclick="return confirm('Yakin ingin menyelesaikan reservasi?')">
                                                 Selesaikan
                                             </button>
                                         </form>
                                     @endif
-                                </td>                                
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

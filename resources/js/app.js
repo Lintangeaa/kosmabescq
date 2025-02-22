@@ -8,31 +8,32 @@ window.Alpine = Alpine;
 Alpine.start();
 
 document.addEventListener("DOMContentLoaded", function () {
-    var swiper = new Swiper(".swiper-container", {
+    const swiper = new Swiper('.mySwiper', {
         slidesPerView: 1,
-        spaceBetween: 10,
+        spaceBetween: 15,
         pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
+          el: '.swiper-pagination',
+          clickable: true,
         },
         navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
-        // loop: true,
-        // autoplay: {
-        //     delay: 5000,
-        // },
         breakpoints: {
-            640: {
-                slidesPerView: 1,
-            },
-            768: {
-                slidesPerView: 2,
-            },
-            1024: {
-                slidesPerView: 5,
-            },
+          640: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
         },
-    });
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+      });
 });
