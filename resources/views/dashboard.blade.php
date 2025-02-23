@@ -5,7 +5,6 @@
         </h2>
     </x-slot>
 
-
     <!-- Menampilkan Data Kost -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -14,8 +13,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($kosKami as $kost)
                         <a href="">
-                            <div
-                                class="h-full hover:bg-orange-200 p-2 rounded-lg transition-all duration-300 border border-orange-200">
+                            <div class="h-full hover:bg-orange-200 p-2 rounded-lg transition-all duration-300 border border-orange-200">
                                 <img src="{{ asset('storage/' . $kost->image) }}" alt="{{ $kost->nama }}"
                                     class="h-32 w-full rounded-lg object-cover">
                                 <div class="py-2">
@@ -33,7 +31,4 @@
             </div>
         </div>
     </div>
-    <<<<<<< HEAD </x-app-layout>
-        =======
 </x-app-layout>
->>>>>>> 01f9d79 (update)

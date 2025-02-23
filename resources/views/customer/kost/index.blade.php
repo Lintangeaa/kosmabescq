@@ -2,7 +2,7 @@
 
     <body class="font-sans antialiased bg-gray-50">
         <!-- Header -->
-        <div class="sticky top-0 h-20 bg-orange-200 flex justify-between items-center px-10 lg:px-40 z-20 shadow-md">
+        <div class="sticky top-0 h-20 bg-orange-200 flex justify-between items-center px-6 sm:px-10 lg:px-28  z-20 shadow-md">
             <h1 class="text-xl uppercase font-extrabold text-ellipsis text-orange-700">Kosmabescq</h1>
         </div>
 
