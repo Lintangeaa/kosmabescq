@@ -31,16 +31,7 @@
                             <td class="border px-4 py-2">{{ $kost->nama }}</td>
                             <td class="border px-4 py-2">{{ $kost->address->formatted_address }}</td>
                             <td class="border px-4 py-2">Rp{{ number_format($kost->harga, 2) }}</td>
-                            <td class="border px-4 py-2 text-center">
-                                <a href="{{ route('admin.kost.edit', $kost->id) }}"
-                                    class="text-blue-500 hover:underline">Edit</a> |
-                                <form action="{{ route('admin.kost.destroy', $kost->id) }}" method="POST"
-                                    class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline"
-                                        onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                    <td class="border flex gap-2 justify-center items-center px-4 py-2">
+                            <td class="border flex gap-2 justify-center items-center px-4 py-2">
                                         <a href="{{ route('admin.kost.edit', $kost->id) }}"
                                             class=" hover:underline"><svg xmlns="http://www.w3.org/2000/svg"
                                                 fill="#155E95" class="h-5 w-5" viewBox="0 0 512 512">
@@ -60,6 +51,7 @@
                                                 </svg></button>
                                         </form>
                                     </td>
+                                </tr>
                         </tr>
                     @empty
                         <tr>

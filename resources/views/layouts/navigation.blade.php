@@ -4,9 +4,36 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex items-center  ">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-black" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="35" viewBox="0 0 301 231"
+                            fill="none">
+                            <rect x="46.9999" y="41.92" width="23" height="189" fill="#14303D" />
+                            <path
+                                d="M124.104 9.92002L140.311 26.2396L37.5001 128.42L3.27233e-05 128.42L124.104 9.92002Z"
+                                fill="#14303D" />
+                            <path
+                                d="M124.104 9.92002L140.311 26.2396L37.5001 128.42L3.27233e-05 128.42L124.104 9.92002Z"
+                                fill="#14303D" />
+                            <path d="M126.246 9.31123L110.039 25.6308L212.85 127.811L250.35 127.811L126.246 9.31123Z"
+                                fill="#14303D" />
+                            <path d="M126.246 9.31123L110.039 25.6308L212.85 127.811L250.35 127.811L126.246 9.31123Z"
+                                fill="#14303D" />
+                            <path d="M187.5 16.42L154 17.92L263.497 128.311L300.997 128.311L187.5 16.42Z"
+                                fill="#14303D" />
+                            <path d="M187.5 16.42L154 17.92L263.497 128.311L300.997 128.311L187.5 16.42Z"
+                                fill="#14303D" />
+                            <rect x="60.9999" y="230.92" width="23" height="189"
+                                transform="rotate(-90 60.9999 230.92)" fill="#14303D" />
+                            <rect x="100" y="154.92" width="23" height="23" transform="rotate(-90 100 154.92)"
+                                fill="#F49322" />
+                            <rect x="132" y="154.92" width="23" height="23" transform="rotate(-90 132 154.92)"
+                                fill="#F49322" />
+                            <rect x="100" y="186.92" width="23" height="23" transform="rotate(-90 100 186.92)"
+                                fill="#F49322" />
+                            <rect x="132" y="186.92" width="23" height="23" transform="rotate(-90 132 186.92)"
+                                fill="#F49322" />
+                        </svg>
                     </a>
                 </div>
 
@@ -14,7 +41,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (auth()->user()->isAdmin())
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                            {{ __('Beranda') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('admin.user.index')" :active="request()->routeIs('admin.user.index')">

@@ -82,25 +82,6 @@
                                         {{ $reservation->status }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-2 border-b text-center">
-                                    @if ($reservation->status == 'Dibayar')
-                                        <form
-                                            action="{{ route('admin.reservations.update-status', $reservation->reservation_id) }}"
-                                            method="POST" class="inline">
-                                            @csrf
-                                            @method('PUT')
-
-                                            <input type="hidden" name="status" value="Selesai">
-
-                                            <!-- Tombol untuk mengubah status menjadi Selesai -->
-                                            <button type="submit"
-                                                class="bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 py-1 px-3 text-sm rounded-md transition duration-200 transform hover:scale-105"
-                                                onclick="return confirm('Yakin ingin menyelesaikan reservasi?')">
-                                                Selesaikan
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
