@@ -27,6 +27,11 @@ class User extends Authenticatable
         return $this->hasMany(Kost::class);
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'user_id'); 
+    }
+
     // Menambahkan metode untuk memeriksa apakah pengguna adalah Admin, Owner, atau Customer
     public function isAdmin()
     {

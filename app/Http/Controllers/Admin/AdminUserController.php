@@ -99,15 +99,19 @@ class AdminUserController extends Controller
         return redirect()->route('admin.user.index')->with('success', 'User updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        // Menghapus user
         $user = User::findOrFail($id);
+
+        foreach ($user->reservations as $reservation) {
+            $reservation->payments()->delete();
+            
+            $reservation->delete();
+        }
+
         $user->delete();
 
-        return redirect()->route('admin.user.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('admin.user.index')->with('success', 'Pengguna berhasil dihapus');
     }
+
 }
