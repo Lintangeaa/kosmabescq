@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Reservation extends Model
 {
@@ -19,12 +20,21 @@ class Reservation extends Model
     public static function generateUniqueReservationId()
     {
         $today = now()->format('dmY');
+        do {
+            $randomNumber = mt_rand(1000, 9999);
 
-        $randomNumber = mt_rand(1000000, 9999999); 
+            $reservationId = 'K' . $today . $randomNumber;
 
-        return 'K' . $today . $randomNumber;
+            $uniqueString = substr($reservationId, 0, 11);
+        } while (self::reservationIdExists($uniqueString));
+
+        return $uniqueString;
     }
 
+    public static function reservationIdExists($reservationId)
+    {
+        return DB::table('reservations')->where('reservation_id', $reservationId)->exists();
+    }
 
     public function kost()
     {
