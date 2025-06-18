@@ -60,10 +60,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
         Route::put('/reservations/{reservation}/update-status', [ReservationController::class, 'updateStatus'])->name('reservations.update-status');
+        Route::post('/reservations/notify', [ReservationController::class, 'sendNotification'])->name('reservations.notify');
+        Route::get('/reservations/upcoming-checkouts', [ReservationController::class, 'getUpcomingCheckouts'])->name('admin.reservations.upcoming-checkouts');
     });
 });
-
-
 
 Route::post('upload-image', [ImageUploadController::class, 'upload'])->name('upload.image');
 

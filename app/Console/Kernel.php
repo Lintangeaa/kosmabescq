@@ -9,6 +9,6 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('reservation:notify-checkout')->everyFiveMinutes();
+        $schedule->command('reservation:notify-checkout')->dailyAt('10:00');
     }
 }

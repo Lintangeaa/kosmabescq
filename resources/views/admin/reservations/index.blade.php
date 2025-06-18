@@ -5,6 +5,9 @@
                 {{ __('Daftar Reservasi Kos') }}
             </h2>
             <div class="flex gap-4 items-center">
+                <button id="sendNotification" onclick="sendNotification()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Kirim Notifikasi
+                </button>
                 <div class="relative">
                     <input type="text" id="searchInput" placeholder="Cari reservasi..."
                         class="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -172,6 +175,10 @@
                                         Batalkan
                                     </button>
                                 </form>
+                                <button type="button" onclick="sendSpecificNotification()"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    Kirim Pengingat
+                                </button>
                             </div>
                             <button type="button" onclick="closeReservationModal()"
                                 class="px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md border border-gray-300 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -285,9 +292,14 @@
             });
         });
 
+        let currentReservationId = null;
+
         function showReservationModal(reservationId, kostName, userName, address, phone, total, startDate, endDate, status, payment) {
+            currentReservationId = reservationId;
             const modalContent = document.getElementById('modalContent');
             const statusIndicator = document.getElementById('statusIndicator');
+            const actionButtons = document.getElementById('actionButtons');
+            const notifyButton = actionButtons.querySelector('button[onclick="sendSpecificNotification()"]');
 
             // Set modal content
             document.getElementById('modalReservationId').textContent = reservationId;
@@ -300,6 +312,28 @@
             document.getElementById('modalEndDate').textContent = endDate;
             document.getElementById('modalStatus').textContent = status;
             document.getElementById('modalPayment').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(payment);
+
+            // Check if checkout is within 2 weeks
+            const checkoutDate = new Date(endDate);
+            const twoWeeksFromNow = new Date();
+            twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+
+            // Show/hide notification button based on status and checkout date
+            if ((status === 'Dibayar' || status === 'Selesai') &&
+                checkoutDate <= twoWeeksFromNow &&
+                checkoutDate > new Date()) {
+                notifyButton.classList.remove('hidden');
+            } else {
+                notifyButton.classList.add('hidden');
+            }
+
+            // Hide status update buttons for completed or cancelled reservations
+            const statusButtons = actionButtons.querySelector('form');
+            if (status === 'Selesai' || status === 'Dibatalkan') {
+                statusButtons.classList.add('hidden');
+            } else {
+                statusButtons.classList.remove('hidden');
+            }
 
             // Set status indicator color
             const statusColors = {
@@ -344,46 +378,6 @@
         // Initialize status counts when page loads
         document.addEventListener('DOMContentLoaded', updateStatusCounts);
 
-        let currentReservationId = null;
-
-        function showReservationModal(reservationId, kostName, userName, address, phone, total, startDate, endDate, status, payment) {
-            currentReservationId = reservationId;
-            const modalContent = document.getElementById('modalContent');
-            const statusIndicator = document.getElementById('statusIndicator');
-            const actionButtons = document.getElementById('actionButtons');
-
-            // Set modal content
-            document.getElementById('modalReservationId').textContent = reservationId;
-            document.getElementById('modalKostName').textContent = kostName;
-            document.getElementById('modalUserName').textContent = userName;
-            document.getElementById('modalAddress').textContent = address;
-            document.getElementById('modalPhone').textContent = phone;
-            document.getElementById('modalTotal').textContent = Math.floor(total) + ' Bulan';
-            document.getElementById('modalStartDate').textContent = startDate;
-            document.getElementById('modalEndDate').textContent = endDate;
-            document.getElementById('modalStatus').textContent = status;
-            document.getElementById('modalPayment').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(payment);
-
-            // Hide action buttons for completed or cancelled reservations
-            actionButtons.style.display = (status === 'Selesai' || status === 'Dibatalkan') ? 'none' : 'flex';
-
-            // Set status indicator color
-            const statusColors = {
-                'Menunggu Pembayaran': 'bg-yellow-500',
-                'Dibayar': 'bg-blue-500',
-                'Selesai': 'bg-green-500',
-                'Dibatalkan': 'bg-red-500'
-            };
-            statusIndicator.className = `w-3 h-3 rounded-full ${statusColors[status] || 'bg-gray-500'}`;
-
-            // Show modal with animation
-            document.getElementById('reservationModal').classList.remove('hidden');
-            setTimeout(() => {
-                modalContent.classList.remove('scale-95', 'opacity-0');
-                modalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
         function updateStatus(newStatus) {
             if (!currentReservationId) return;
 
@@ -411,6 +405,57 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('Terjadi kesalahan saat mengubah status reservasi.');
+            });
+        }
+
+        function sendNotification() {
+            fetch('{{ route("admin.reservations.notify") }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                } else {
+                    alert('Gagal mengirim notifikasi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim notifikasi');
+            });
+        }
+
+        function sendSpecificNotification() {
+            if (!currentReservationId) return;
+
+            fetch('{{ route("admin.reservations.notify") }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reservation_id: currentReservationId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                } else {
+                    alert('Gagal mengirim notifikasi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim notifikasi');
             });
         }
     </script>
