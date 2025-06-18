@@ -1,23 +1,85 @@
-/.phpunit.cache
+# Laravel specific
 /node_modules
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
-/storage/framework/
-/storage/framework/views/*.php
-/storage/logs
 /vendor
 .env
-.env.backup
-.env.production
-.phpactor.json
+.env.*
+!.env.example
 .phpunit.result.cache
-Homestead.json
-Homestead.yaml
+
+# Storage and logs
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+/storage/app/public/*
+!/storage/framework/cache/.gitkeep
+!/storage/framework/sessions/.gitkeep
+!/storage/framework/testing/.gitkeep
+!/storage/framework/views/.gitkeep
+!/storage/logs/.gitkeep
+!/storage/app/public/.gitkeep
+
+# Composer
+composer.phar
+/vendor/
 auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
+
+# IDE and Editor folders
 /.idea
 /.vscode
+/.fleet
+.phpactor.json
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+
+# Node/NPM/Yarn
+/node_modules
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.npm
+.yarn
+.yarn-integrity
+
+# Testing
+.phpunit.cache
+.phpunit.result.cache
+/coverage
+.coverage
+coverage.xml
+*.coveragexml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Laravel Mix
+/public/css
+/public/js
+/public/mix-manifest.json
+/public/hot
+mix-manifest.json
+
+# Other
+*.log
+*.cache
+*.bak
+*.tmp
+*.temp
+.env.backup
+.env.production
+Homestead.json
+Homestead.yaml

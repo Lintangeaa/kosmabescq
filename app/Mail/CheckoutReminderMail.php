@@ -5,9 +5,8 @@ namespace App\Mail;
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Log;
 
 class CheckoutReminderMail extends Mailable
 {
@@ -22,16 +21,7 @@ class CheckoutReminderMail extends Mailable
 
     public function build()
     {
-        try {
-            if (!View::exists('emails.checkout_reminder')) {
-                throw new \Exception('Email template not found');
-            }
-
-            return $this->view('emails.checkout_reminder')
-                        ->subject('Pengingat: Masa Sewa Kos Akan Berakhir');
-        } catch (\Exception $e) {
-            Log::error('Failed to build checkout reminder email: ' . $e->getMessage());
-            throw $e;
-        }
+        return $this->markdown('emails.checkout_reminder')
+                    ->subject('Pengingat: Masa Sewa Kos Akan Berakhir');
     }
 }
