@@ -20,6 +20,7 @@
                         <th class="border px-4 py-2">No</th>
                         <th class="border px-4 py-2">Nama</th>
                         <th class="border px-4 py-2">Email</th>
+                        <th class="border px-4 py-2">Password</th>
                         <th class="border px-4 py-2">Role</th>
                         <th class="border px-4 py-2">Aksi</th>
                     </tr>
@@ -30,6 +31,11 @@
                             <td class="border px-4 py-2 text-center">{{ $loop->iteration }}</td>
                             <td class="border px-4 py-2">{{ $user->name }}</td>
                             <td class="border px-4 py-2">{{ $user->email }}</td>
+                            <td class="border px-4 py-2">
+                                <span class="password-field" data-password="{{ $user->password }}" style="cursor: pointer;">
+                                    ********
+                                </span>
+                            </td>
                             <td class="border px-4 py-2">{{ $user->role }}</td>
                             <td class="border px-4 py-2">
                                 <div class="flex gap-3 justify-center items-center">
@@ -59,7 +65,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="border px-4 py-2 text-center">Data tidak tersedia</td>
+                            <td colspan="6" class="border px-4 py-2 text-center">Data tidak tersedia</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -73,4 +79,24 @@
             }
         </script>
     @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordFields = document.querySelectorAll('.password-field');
+
+            passwordFields.forEach(field => {
+                let isVisible = false;
+
+                field.addEventListener('click', function() {
+                    if (isVisible) {
+                        this.textContent = '********';
+                        isVisible = false;
+                    } else {
+                        this.textContent = this.getAttribute('data-password');
+                        isVisible = true;
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

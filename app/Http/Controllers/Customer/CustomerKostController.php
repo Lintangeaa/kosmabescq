@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kost;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerKostController extends Controller
 {
@@ -16,30 +17,34 @@ class CustomerKostController extends Controller
             'address',
             'user',
             'reservations' => function ($query) {
-                $query->selectRaw('kost_id, SUM(total) as reserved_count')
+                $query->whereIn('status', ['Dibayar', 'Menunggu Pembayaran', 'Selesai'])
+                    ->selectRaw('kost_id, COUNT(*) as active_reservations')
                     ->groupBy('kost_id');
             }
         ])->get();
 
-        // Menghitung kamar tersedia dan menambahkan reserved_count
+        // Menghitung kamar tersedia berdasarkan reservasi aktif
         foreach ($kosts as $kost) {
-            $reserved_count = optional($kost->reservations->first())->reserved_count ?? 0;
-            $kost->reserved_count = $reserved_count;
-            $kost->kamar_tersedia = $kost->total_kamar - $reserved_count;
+            $active_reservations = optional($kost->reservations->first())->active_reservations ?? 0;
+            $kost->reserved_count = $active_reservations;
+            $kost->kamar_tersedia = $kost->total_kamar - $active_reservations;
         }
 
         // Sort Kos Populer: Berdasarkan reservasi terbanyak
-        $kosPopuler = $kosts->sortByDesc('reserved_count')->take(5);
+        $kosPopuler = $kosts->count() > 0 ? $kosts->sortByDesc('reserved_count')->take(5) : collect();
 
         // Sort Kos Kami: Berdasarkan sisa kamar terbanyak
-        $kosKami = $kosts->sortByDesc('kamar_tersedia')->take(8);
+        $kosKami = $kosts->count() > 0 ? $kosts->sortByDesc('kamar_tersedia')->take(8) : collect();
 
         // Jika pengguna adalah admin atau pemilik kost, redirect ke dashboard
-        if (auth()->user()->isAdmin() || auth()->user()->isOwner()) {
-            return redirect()->route('dashboard');
-        }else{
-            return view('customer.kost.index', compact('kosPopuler', 'kosKami'));
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role === 'Admin' || $user->role === 'Owner') {
+                return redirect()->route('dashboard');
+            }
         }
+
+        return view('customer.kost.index', compact('kosPopuler', 'kosKami'));
     }
 
     public function show($id)
@@ -57,7 +62,8 @@ class CustomerKostController extends Controller
 
         // Query dasar
         $kosts = Kost::with(['reservations' => function ($query) {
-            $query->selectRaw('kost_id, SUM(total) as reserved_count')
+            $query->whereIn('status', ['Dibayar', 'Menunggu Pembayaran'])
+                ->selectRaw('kost_id, COUNT(*) as active_reservations')
                 ->groupBy('kost_id');
         }]);
 
@@ -74,10 +80,10 @@ class CustomerKostController extends Controller
 
         $kosts = $kosts->get();
 
-        // Hitung kamar tersedia
+        // Hitung kamar tersedia berdasarkan reservasi aktif
         foreach ($kosts as $kost) {
-            $reserved_count = optional($kost->reservations->first())->reserved_count ?? 0;
-            $kost->kamar_tersedia = $kost->total_kamar - $reserved_count;
+            $active_reservations = optional($kost->reservations->first())->active_reservations ?? 0;
+            $kost->kamar_tersedia = $kost->total_kamar - $active_reservations;
         }
 
         return view('customer.kost.all', compact('kosts'));

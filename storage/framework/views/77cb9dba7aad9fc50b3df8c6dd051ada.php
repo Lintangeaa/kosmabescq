@@ -9,67 +9,71 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             <?php echo e(__('Daftar Reservasi')); ?>
 
         </h2>
      <?php $__env->endSlot(); ?>
-  
+
     <div class="p-12">
         <?php if($reservations->isEmpty()): ?>
             <div class="text-center">
-                <p class="text-gray-600">Tidak ada reservasi yang ditemukan.</p>
-                <a href="<?php echo e(route('customer.kost.index')); ?>" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Cari Kos</a>
+                <p class="mb-6 text-gray-600">Tidak ada reservasi yang ditemukan.</p>
+                <a href="<?php echo e(route('customer.kost.index')); ?>"
+                    class="px-4 py-2 mt-4 text-white bg-orange-500 rounded hover:bg-orange-600">Cari Kos</a>
             </div>
         <?php else: ?>
-            <div class="overflow-x-auto sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="overflow-x-auto gap-6 sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 <?php $__currentLoopData = $reservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reservation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300
-                    <?php if($reservation->status == 'Dibatalkan'): ?> bg-red-100 border-red-300 <?php elseif($reservation->status == 'Selesai'): ?> bg-green-100 border-green-300 <?php endif; ?>
-                ">
-                    <h3 class="text-xl font-semibold text-gray-800"><?php echo e($reservation->kost->nama); ?></h3>
-                    <p class="text-gray-600 mt-2">ID Reservasi: <span class="font-medium text-gray-800"><?php echo e($reservation->reservation_id); ?></span></p>
-                    <p class="text-gray-600 mt-1">Tanggal Mulai: <span class="font-medium text-gray-800"><?php echo e($reservation->tanggal_reservasi); ?></span></p>
-                    <p class="text-gray-600 mt-1">Total Bulan: <span class="font-medium text-gray-800"><?php echo e(floor($reservation->total)); ?> Bulan</span></p>
-                    
-                    <!-- Status Section -->
-                    <p class="text-gray-600 mt-1">
-                        Status: 
-                        <span class="font-medium 
-                            <?php if($reservation->status == 'Dibatalkan'): ?>
-                                text-red-600
-                            <?php elseif($reservation->status == 'Dibayar'): ?>
-                                text-green-600
-                            <?php elseif($reservation->status == 'Menunggu Pembayaran'): ?>
-                                text-yellow-600
-                            <?php elseif($reservation->status == 'Selesai'): ?>
-                                text-blue-600
-                            <?php endif; ?>
-                        ">
-                            <?php echo e($reservation->status); ?>
+                    <?php
+                        $statusColor = match($reservation->status) {
+                            'Dibatalkan' => 'red',
+                            'Selesai' => 'green',
+                            'Dibayar' => 'blue',
+                            'Menunggu Pembayaran' => 'yellow',
+                            default => 'gray'
+                        };
+                    ?>
+                    <div class="p-6 rounded-lg shadow-sm mb-6 border hover:shadow-lg transition-shadow duration-300
+                        bg-<?php echo e($statusColor); ?>-100 border-<?php echo e($statusColor); ?>-300">
+                        <h3 class="text-xl font-semibold text-gray-800"><?php echo e($reservation->kost->nama); ?></h3>
+                        <p class="mt-2 text-gray-600">ID Reservasi: <span
+                                class="font-medium text-gray-800"><?php echo e($reservation->reservation_id); ?></span></p>
+                        <p class="mt-1 text-gray-600">Tanggal Mulai: <span
+                                class="font-medium text-gray-800"><?php echo e($reservation->tanggal_reservasi); ?></span></p>
+                        <p class="mt-1 text-gray-600">Total Bulan: <span
+                                class="font-medium text-gray-800"><?php echo e(floor($reservation->total)); ?> Bulan</span></p>
 
-                        </span>
-                    </p>
+                        <!-- Status Section -->
+                        <p class="mt-1 text-gray-600">
+                            Status:
+                            <span class="font-medium text-<?php echo e($statusColor); ?>-600">
+                                <?php echo e($reservation->status); ?>
 
-                    <?php if($reservation->status == 'Menunggu Pembayaran'): ?>
+                            </span>
+                        </p>
+
                         <div class="mt-4 text-center">
-                            <a href="<?php echo e(route('customer.reservations.payment', $reservation->reservation_id)); ?>" class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-                                Bayar Sekarang
-                            </a>
+                            <?php switch($reservation->status):
+                                case ('Menunggu Pembayaran'): ?>
+                                    <a href="<?php echo e(route('customer.reservations.payment', $reservation->reservation_id)); ?>"
+                                        class="inline-block px-5 py-2 text-white bg-<?php echo e($statusColor); ?>-600 rounded-lg hover:bg-<?php echo e($statusColor); ?>-700 focus:outline-none focus:ring-2 focus:ring-<?php echo e($statusColor); ?>-500">
+                                        Bayar Sekarang
+                                    </a>
+                                    <?php break; ?>
+                                <?php case ('Dibayar'): ?>
+                                <?php case ('Selesai'): ?>
+                                    <a href="<?php echo e(route('customer.reservations.invoice', $reservation->reservation_id)); ?>"
+                                        class="inline-block px-5 py-2 text-white bg-<?php echo e($statusColor); ?>-600 rounded-lg hover:bg-<?php echo e($statusColor); ?>-700 focus:outline-none focus:ring-2 focus:ring-<?php echo e($statusColor); ?>-500">
+                                        Lihat Invoice
+                                    </a>
+                                    <?php break; ?>
+                                <?php case ('Dibatalkan'): ?>
+                                    <span class="font-semibold text-<?php echo e($statusColor); ?>-600">Reservasi Dibatalkan</span>
+                                    <?php break; ?>
+                            <?php endswitch; ?>
                         </div>
-                    <?php elseif($reservation->status == 'Dibayar'): ?>
-                        <div class="mt-4 text-center">
-                            <a href="<?php echo e(route('customer.reservations.invoice', $reservation->reservation_id)); ?>" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                Lihat Invoice
-                            </a>
-                        </div>
-                    <?php elseif($reservation->status == 'Dibatalkan'): ?>
-                        <!-- Jika status Dibatalkan, tampilkan label merah dan tidak ada tombol -->
-                        <div class="mt-4 text-center">
-                            <span class="text-red-600 font-semibold">Reservasi Dibatalkan</span>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                    </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         <?php endif; ?>

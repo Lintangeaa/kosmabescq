@@ -13,9 +13,12 @@ class CreateReservationsTable extends Migration
             $table->string('reservation_id', 11);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('kost_id')->constrained('kosts');
+            $table->text('alamat')->nullable();
+            $table->string('no_hp', 15);
             $table->decimal('total', 10, 2);
-            $table->enum('status', ['Menunggu Pembayaran', 'Dibayar',  'Dibatalkan', 'Selesai']);
+            $table->string('status');
             $table->date('tanggal_reservasi');
+            $table->date('tanggal_keluar');
             $table->timestamps();
         });
     }

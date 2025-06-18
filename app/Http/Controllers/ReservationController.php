@@ -11,10 +11,9 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        // Ambil semua reservasi yang memiliki kost yang dimiliki oleh owner yang sedang login
         $reservations = Reservation::whereHas('kost', function ($query) {
-            $query->where('user_id', Auth::id());  // Pastikan kost milik owner yang sedang login
-        })->with('kost', 'user')->get();  // Menambahkan 'user' untuk eager load relasi user
+            $query->where('user_id', Auth::id());
+        })->with('kost', 'user')->get();
 
         return view('admin.reservations.index', compact('reservations'));
     }
@@ -22,15 +21,12 @@ class ReservationController extends Controller
     public function updateStatus(Request $request, $id)
     {
         try {
-            // Validasi input status
             $request->validate([
-                'status' => 'required|in:Dibayar,Dibatalkan,Selesai', // Pastikan status yang diterima valid
+                'status' => 'required|in:Dibayar,Dibatalkan,Selesai',
             ]);
 
-            // Cari reservation berdasarkan ID
             $reservation = Reservation::where('reservation_id', $id)->firstOrFail();
 
-            // Perbarui status reservation sesuai dengan input dari request
             $reservation->status = $request->status;
             $reservation->save();
 

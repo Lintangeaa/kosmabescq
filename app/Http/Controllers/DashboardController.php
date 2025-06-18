@@ -27,10 +27,10 @@ class DashboardController extends Controller
         }
 
         // Sort Kos Populer: Berdasarkan reservasi terbanyak
-        $kosPopuler = $kosts->sortByDesc('reserved_count')->take(5);
+        $kosPopuler = $kosts->count() > 0 ? $kosts->sortByDesc('reserved_count')->take(5) : collect();
 
         // Sort Kos Kami: Berdasarkan sisa kamar terbanyak
-        $kosKami = $kosts->sortByDesc('kamar_tersedia')->take(8);
+        $kosKami = $kosts->count() > 0 ? $kosts->sortByDesc('kamar_tersedia')->take(8) : collect();
 
         return view('dashboard', compact('kosPopuler', 'kosKami'));
     }

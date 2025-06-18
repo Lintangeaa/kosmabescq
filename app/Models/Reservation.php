@@ -14,7 +14,10 @@ class Reservation extends Model
         'kost_id',
         'total',
         'status',
-        'tanggal_reservasi'
+        'tanggal_reservasi',
+        'tanggal_keluar',
+        'alamat',
+        'no_hp'
     ];
 
     public static function generateUniqueReservationId()

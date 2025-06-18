@@ -8,6 +8,7 @@ use App\Models\Kost;
 use App\Models\Payment;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -68,7 +69,7 @@ class KostController extends Controller
         // Menyimpan kost dengan address_id yang sudah ada dan image
         $kostData = [
             'nama' => $validated['nama'],
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'aktif' => true,
             'address_id' => $address->id,
             'harga' => $validated['harga'],
@@ -145,14 +146,14 @@ class KostController extends Controller
             //     $kost->image = $imagePath;
             // }
 
-            
+
             if ($request->hasFile('image')) {
                 if ($kost->image && Storage::disk('public')->exists($kost->image)) {
                     Storage::disk('public')->delete($kost->image);
                 }
                 $kost->image = $request->file('image')->store('kost_images', 'public');
             }
-            
+
 
             // Update data kost
             $kost->update([
@@ -196,14 +197,14 @@ class KostController extends Controller
     {
         // Menghapus semua pembayaran yang terkait dengan reservasi yang berkaitan dengan Kost
         Payment::whereIn('reservation_id', Reservation::where('kost_id', $kost->id)->pluck('id'))->delete();
-        
+
         // Menghapus semua reservasi yang terkait dengan Kost
         Reservation::where('kost_id', $kost->id)->delete();
-    
+
         // Menghapus Kost
         $kost->delete();
-    
+
         // Redirect ke halaman daftar Kost dengan pesan sukses
         return redirect()->route('admin.kost.index')->with('success', 'Kost berhasil dihapus.');
-    }    
+    }
 }

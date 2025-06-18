@@ -14,7 +14,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // Menambahkan kolom role
+        'role',
     ];
 
     protected $hidden = [
@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class, 'user_id'); 
+        return $this->hasMany(Reservation::class, 'user_id');
     }
 
     // Menambahkan metode untuk memeriksa apakah pengguna adalah Admin, Owner, atau Customer

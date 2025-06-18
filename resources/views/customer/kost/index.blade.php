@@ -25,7 +25,7 @@
                 <!-- Swiper Container -->
                 <div class="swiper mySwiper mt-5">
                     <div class="swiper-wrapper">
-                        @foreach ($kosPopuler as $kost)
+                        @forelse ($kosPopuler as $kost)
                             <div class="swiper-slide hover:-translate-y-2 transition-all duration-300 cursor-pointer">
                                 <a href="{{ route('customer.kost.show', $kost->id) }}">
                                     <div class="w-48 bg-orange-100 h-56 rounded-xl p-2 hover:shadow-lg">
@@ -41,7 +41,18 @@
                                     </div>
                                 </a>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="swiper-slide">
+                                <div class="w-48 bg-gray-100 h-56 rounded-xl p-2 flex items-center justify-center">
+                                    <div class="text-center text-gray-500">
+                                        <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                        </svg>
+                                        <p class="text-xs">Belum ada kos populer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </section>
@@ -58,7 +69,7 @@
 
                 <!-- Grid Responsif -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    @foreach ($kosKami as $kost)
+                    @forelse ($kosKami as $kost)
                         <a href="{{ route('customer.kost.show', $kost->id) }}">
                             <div
                                 class="h-full hover:bg-orange-200 p-2 rounded-lg transition-all duration-300 border border-orange-200">
@@ -74,7 +85,17 @@
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <div class="col-span-full text-center py-8">
+                            <div class="text-gray-500">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada kos tersedia</h3>
+                                <p class="mt-1 text-sm text-gray-500">Kos akan tampil di sini ketika sudah tersedia.</p>
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
 
                 <!-- Link Lihat Lebih Banyak -->

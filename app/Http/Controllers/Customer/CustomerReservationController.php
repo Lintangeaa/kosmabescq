@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\User;
 
 class CustomerReservationController extends Controller
 {
@@ -41,21 +42,30 @@ class CustomerReservationController extends Controller
             'kost_id' => 'required|exists:kosts,id',
             'total' => 'required|integer|min:1',
             'start_date' => 'required|date|after_or_equal:today',
-        ]);     
-    
-        $reservation = Reservation::create([
+            'alamat' => 'required|string|max:500',
+            'no_hp' => 'required|string|max:15',
+        ]);
+
+        // Calculate end date by adding months to start date
+        $startDate = \Carbon\Carbon::parse($request->start_date);
+        $endDate = $startDate->copy()->addMonths((int)$request->total);
+
+        Reservation::create([
             'reservation_id' => Reservation::generateUniqueReservationId(),
             'user_id' => Auth::id(),
             'kost_id' => $request->kost_id,
             'total' => $request->total,
             'status' => 'Menunggu Pembayaran',
-            'tanggal_reservasi' => $request->start_date
+            'tanggal_reservasi' => $request->start_date,
+            'tanggal_keluar' => $endDate->format('Y-m-d'),
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp
         ]);
 
         return redirect()->route('customer.reservations.index')->with('success', 'Reservasi berhasil dibuat.');
     }
 
-    public function getPayment($id) 
+    public function getPayment($id)
     {
         $reservation = Reservation::findOrFail($id);
 
@@ -150,8 +160,8 @@ class CustomerReservationController extends Controller
             // Ambil data pembayaran terkait
             $payment = Payment::where('reservation_id', $reservation->id)->first();
 
-            // Pastikan reservasi sudah dibayar
-            if ($reservation->status != 'Dibayar') {
+            // Pastikan reservasi sudah dibayar atau selesai
+            if (!in_array($reservation->status, ['Dibayar', 'Selesai'])) {
                 return redirect()->route('customer.reservations.index')->with('error', 'Reservasi belum dibayar.');
             }
 
@@ -172,8 +182,8 @@ class CustomerReservationController extends Controller
             $reservation = Reservation::where('reservation_id', $reservationId)->firstOrFail();
             $payment = Payment::where('reservation_id', $reservation->id)->first();
 
-            // Pastikan reservasi sudah dibayar
-            if ($reservation->status != 'Dibayar') {
+            // Pastikan reservasi sudah dibayar atau selesai
+            if (!in_array($reservation->status, ['Dibayar', 'Selesai'])) {
                 return redirect()->route('customer.reservations.index')->with('error', 'Reservasi belum dibayar.');
             }
 
