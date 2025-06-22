@@ -14,6 +14,7 @@ class Reservation extends Model
         'kost_id',
         'total',
         'status',
+        'email_sent',
         'tanggal_reservasi',
         'tanggal_keluar',
         'alamat',

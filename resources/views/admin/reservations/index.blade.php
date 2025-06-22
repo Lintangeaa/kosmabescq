@@ -6,7 +6,15 @@
             </h2>
             <div class="flex gap-4 items-center">
                 <button id="sendNotification" onclick="sendNotification()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    Kirim Notifikasi
+                    <span class="inline-flex items-center">
+                        <span id="bulkNotifyButtonText">Kirim Notifikasi</span>
+                        <span id="bulkNotifySpinner" class="hidden ml-2">
+                            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </span>
+                    </span>
                 </button>
                 <div class="relative">
                     <input type="text" id="searchInput" placeholder="Cari reservasi..."
@@ -159,6 +167,14 @@
                                     <p class="text-sm font-medium text-gray-500">Tanggal Keluar</p>
                                     <p id="modalEndDate" class="text-base font-semibold text-gray-900"></p>
                                 </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Status</p>
+                                    <p id="modalStatus" class="text-base font-semibold text-gray-900"></p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Status Email</p>
+                                    <p id="modalEmailSent" class="text-base font-semibold text-gray-900"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="flex justify-between items-center px-6 py-4 bg-gray-50">
@@ -177,7 +193,15 @@
                                 </form>
                                 <button type="button" onclick="sendSpecificNotification()"
                                     class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                    Kirim Pengingat
+                                    <span class="inline-flex items-center">
+                                        <span id="notifyButtonText">Kirim Pengingat</span>
+                                        <span id="notifySpinner" class="hidden ml-2">
+                                            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
                                 </button>
                             </div>
                             <button type="button" onclick="closeReservationModal()"
@@ -229,7 +253,8 @@
                                         '{{ $reservation->tanggal_reservasi }}',
                                         '{{ $reservation->tanggal_keluar }}',
                                         '{{ $reservation->status }}',
-                                        '{{ $reservation->total * $reservation->kost->harga }}'
+                                        '{{ $reservation->total * $reservation->kost->harga }}',
+                                        '{{ $reservation->email_sent }}'
                                     )">
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $reservation->reservation_id }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">{{ $reservation->kost->nama }}</td>
@@ -294,7 +319,7 @@
 
         let currentReservationId = null;
 
-        function showReservationModal(reservationId, kostName, userName, address, phone, total, startDate, endDate, status, payment) {
+        function showReservationModal(reservationId, kostName, userName, address, phone, total, startDate, endDate, status, payment, emailSent) {
             currentReservationId = reservationId;
             const modalContent = document.getElementById('modalContent');
             const statusIndicator = document.getElementById('statusIndicator');
@@ -312,20 +337,10 @@
             document.getElementById('modalEndDate').textContent = endDate;
             document.getElementById('modalStatus').textContent = status;
             document.getElementById('modalPayment').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(payment);
+            document.getElementById('modalEmailSent').textContent = emailSent ? 'Sudah Dikirim' : 'Belum Dikirim';
 
-            // Check if checkout is within 2 weeks
-            const checkoutDate = new Date(endDate);
-            const twoWeeksFromNow = new Date();
-            twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
-
-            // Show/hide notification button based on status and checkout date
-            if ((status === 'Dibayar' || status === 'Selesai') &&
-                checkoutDate <= twoWeeksFromNow &&
-                checkoutDate > new Date()) {
-                notifyButton.classList.remove('hidden');
-            } else {
-                notifyButton.classList.add('hidden');
-            }
+            // Always show notification button for manual notifications
+            notifyButton.classList.remove('hidden');
 
             // Hide status update buttons for completed or cancelled reservations
             const statusButtons = actionButtons.querySelector('form');
@@ -408,7 +423,21 @@
             });
         }
 
+        function setLoading(isLoading, buttonId = 'notifyButtonText', spinnerId = 'notifySpinner') {
+            const button = document.getElementById(buttonId);
+            const spinner = document.getElementById(spinnerId);
+
+            if (isLoading) {
+                button.textContent = 'Mengirim...';
+                spinner.classList.remove('hidden');
+            } else {
+                button.textContent = 'Kirim Pengingat';
+                spinner.classList.add('hidden');
+            }
+        }
+
         function sendNotification() {
+            setLoading(true, 'bulkNotifyButtonText', 'bulkNotifySpinner');
             fetch('{{ route("admin.reservations.notify") }}', {
                 method: 'POST',
                 headers: {
@@ -421,6 +450,8 @@
             .then(data => {
                 if (data.status === 'success') {
                     alert(data.message);
+                } else if (data.status === 'info') {
+                    alert('Info: ' + data.message);
                 } else {
                     alert('Gagal mengirim notifikasi: ' + data.message);
                 }
@@ -428,12 +459,16 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('Terjadi kesalahan saat mengirim notifikasi');
+            })
+            .finally(() => {
+                setLoading(false, 'bulkNotifyButtonText', 'bulkNotifySpinner');
             });
         }
 
         function sendSpecificNotification() {
             if (!currentReservationId) return;
 
+            setLoading(true);
             fetch('{{ route("admin.reservations.notify") }}', {
                 method: 'POST',
                 headers: {
@@ -449,6 +484,10 @@
             .then(data => {
                 if (data.status === 'success') {
                     alert(data.message);
+                    // Update the email sent status in the modal
+                    document.getElementById('modalEmailSent').textContent = 'Sudah Dikirim';
+                } else if (data.status === 'info') {
+                    alert('Info: ' + data.message);
                 } else {
                     alert('Gagal mengirim notifikasi: ' + data.message);
                 }
@@ -456,6 +495,9 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('Terjadi kesalahan saat mengirim notifikasi');
+            })
+            .finally(() => {
+                setLoading(false);
             });
         }
     </script>

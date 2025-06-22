@@ -45,13 +45,18 @@ class ReservationController extends Controller
     {
         try {
             if ($request->has('reservation_id')) {
-                // Send notification for specific reservation
+                // Send notification for specific reservation without any restrictions
                 $reservation = Reservation::with(['user', 'kost'])
                     ->where('reservation_id', $request->reservation_id)
                     ->firstOrFail();
 
                 if ($reservation->user && $reservation->user->email) {
                     Mail::to($reservation->user->email)->send(new CheckoutReminderMail($reservation));
+
+                    // Update email_sent status for tracking purposes only
+                    $reservation->email_sent = true;
+                    $reservation->save();
+
                     return response()->json([
                         'status' => 'success',
                         'message' => 'Notifikasi berhasil dikirim ke ' . $reservation->user->email
@@ -64,10 +69,12 @@ class ReservationController extends Controller
                 ], 404);
             } else {
                 // Send notifications for all upcoming checkouts within 7 days
+                // Only send to those that haven't received emails yet
                 $sevenDaysFromNow = Carbon::now()->addDays(7);
 
                 $reservations = Reservation::with(['user', 'kost'])
                     ->whereIn('status', ['Dibayar', 'Selesai'])
+                    ->where('email_sent', false)
                     ->whereDate('tanggal_keluar', '<=', $sevenDaysFromNow)
                     ->whereDate('tanggal_keluar', '>', Carbon::now())
                     ->get();
@@ -76,14 +83,26 @@ class ReservationController extends Controller
                 foreach ($reservations as $reservation) {
                     if ($reservation->user && $reservation->user->email) {
                         Mail::to($reservation->user->email)->send(new CheckoutReminderMail($reservation));
+
+                        // Update email_sent status
+                        $reservation->email_sent = true;
+                        $reservation->save();
+
                         $emailsSent++;
                     }
                 }
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => "Notifikasi berhasil dikirim ke {$emailsSent} penghuni"
-                ]);
+                if ($emailsSent > 0) {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => "Notifikasi berhasil dikirim ke {$emailsSent} penghuni"
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 'info',
+                        'message' => "Tidak ada notifikasi yang perlu dikirim"
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             return response()->json([

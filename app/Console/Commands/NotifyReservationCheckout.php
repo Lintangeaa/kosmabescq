@@ -22,6 +22,7 @@ class NotifyReservationCheckout extends Command
 
             $reservations = Reservation::with(['user', 'kost'])
                 ->whereIn('status', ['Dibayar', 'Selesai'])
+                ->where('email_sent', false)
                 ->whereDate('tanggal_keluar', '<=', $sevenDaysFromNow)
                 ->whereDate('tanggal_keluar', '>', Carbon::now())
                 ->get();
@@ -33,6 +34,11 @@ class NotifyReservationCheckout extends Command
                     try {
                         Mail::to($reservation->user->email)
                             ->send(new CheckoutReminderMail($reservation));
+
+                        // Update email_sent status
+                        $reservation->email_sent = true;
+                        $reservation->save();
+
                         $emailsSent++;
                     } catch (\Exception $e) {
                         $this->error("Failed to send email to {$reservation->user->email}: {$e->getMessage()}");

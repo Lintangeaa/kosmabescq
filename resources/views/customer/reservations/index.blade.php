@@ -46,7 +46,7 @@
                             @switch($reservation->status)
                                 @case('Menunggu Pembayaran')
                                     <a href="{{ route('customer.reservations.payment', $reservation->reservation_id) }}"
-                                        class="inline-block px-5 py-2 text-white bg-{{ $statusColor }}-600 rounded-lg hover:bg-{{ $statusColor }}-700 focus:outline-none focus:ring-2 focus:ring-{{ $statusColor }}-500">
+                                        class="inline-block px-5 py-2 text-white bg-{{ $statusColor }}-600 rounded-lg hover:bg-{{ $statusColor }}-700 focus:outline-none focus:ring-2 focus:ring-{{ $statusColor }}-500 bg-blue-500 hover:bg-blue-600">
                                         Bayar Sekarang
                                     </a>
                                     @break
