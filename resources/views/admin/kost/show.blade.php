@@ -43,9 +43,12 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="text-sm text-gray-600">Status Kamar</p>
-                                    <p class="mt-1 text-lg font-semibold {{ $kost->kamar_tersedia > 0 ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ $kost->kamar_tersedia }} / {{ $kost->total_kamar }} Tersedia
-                                    </p>
+                                    <div class="flex flex-col items-end">
+                                        <p class="mt-1 text-lg font-semibold {{ $kost->kamar_tersedia > 0 ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $kost->kamar_tersedia }} Tersedia
+                                        </p>
+                                        <p class="text-sm text-gray-500">dari {{ $kost->total_kamar }} Total Kamar</p>
+                                    </div>
                                 </div>
                             </div>
 

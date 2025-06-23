@@ -23,6 +23,8 @@ class Kost extends Model
         'gmap'
     ];
 
+    protected $appends = ['kamar_tersedia'];
+
     public function address()
     {
         return $this->belongsTo(Address::class, 'address_id');
@@ -37,6 +39,15 @@ class Kost extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function getKamarTersediaAttribute()
+    {
+        $kamarTerpakai = $this->reservations()
+            ->whereIn('status', ['Dibayar', 'Menunggu Pembayaran'])
+            ->count();
+
+        return $this->total_kamar - $kamarTerpakai;
     }
 }
 
