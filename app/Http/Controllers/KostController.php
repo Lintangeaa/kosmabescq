@@ -88,7 +88,7 @@ class KostController extends Controller
 
     public function show(Kost $kost)
     {
-        return view('kost.show', compact('kost'));
+        return view('admin.kost.show', compact('kost'));
     }
 
     public function edit(Kost $kost)
