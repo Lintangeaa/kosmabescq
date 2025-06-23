@@ -83,13 +83,13 @@
                     <div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         @forelse ($kosKami as $kost)
                             <div class="relative bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-300 group hover:shadow-lg hover:border-orange-300">
-                                <div class="overflow-hidden rounded-t-lg aspect-w-16 aspect-h-9">
+                                <div class="relative overflow-hidden rounded-t-lg pb-[60%]">
                                     <img src="{{ asset('storage/' . $kost->image) }}" alt="{{ $kost->nama }}"
-                                        class="object-cover w-full h-48 transition-transform duration-300 group-hover:scale-105">
+                                        class="object-cover absolute inset-0 w-full h-full transition-transform duration-300 group-hover:scale-105">
                                 </div>
                                 <div class="p-4">
-                                    <h3 class="mb-2 text-lg font-semibold text-gray-800">{{ $kost->nama }}</h3>
-                                    <p class="mb-2 text-sm text-gray-600">{{ $kost->address->formatted_address }}</p>
+                                    <h3 class="mb-2 text-lg font-semibold text-gray-800 line-clamp-1">{{ $kost->nama }}</h3>
+                                    <p class="mb-2 text-sm text-gray-600 line-clamp-2">{{ $kost->address->formatted_address }}</p>
                                     <div class="flex justify-between items-center">
                                         <span class="text-lg font-bold text-orange-600">
                                             Rp {{ number_format($kost->harga, 0, ',', '.') }}

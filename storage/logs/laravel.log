@@ -753,3 +753,240 @@ Did you mean one of these?
 <li>Keluar masuk wajib mengunci pintu gerbang</li>
 
 </ol>","total_kamar":14,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/L6qtl54a9ZGUcgqFHtbSWfrCVGWHUYBhkT32WH1C.jpg","created_at":"2025-06-20T16:52:43.000000Z","updated_at":"2025-06-20T16:52:43.000000Z"}}]}] 
+[2025-06-23 11:25:51] local.INFO: Reservation found: [{"Illuminate\\Database\\Eloquent\\Collection":[{"id":1,"reservation_id":"K1806202545","user_id":2,"kost_id":1,"alamat":"Jl PLN Kebasen, Desa Kebasen, Kecamatan Kebasen","no_hp":"085178264989","total":"2.00","status":"Selesai","email_sent":1,"tanggal_reservasi":"2025-06-20","tanggal_keluar":"2025-06-21","created_at":"2025-06-18T14:19:22.000000Z","updated_at":"2025-06-23T11:18:22.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":2,"reservation_id":"K1806202575","user_id":2,"kost_id":1,"alamat":"cobacari","no_hp":"628158158929226","total":"4.00","status":"Selesai","email_sent":1,"tanggal_reservasi":"2025-06-19","tanggal_keluar":"2025-10-19","created_at":"2025-06-18T14:52:35.000000Z","updated_at":"2025-06-23T10:38:29.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":7,"reservation_id":"K2206202526","user_id":2,"kost_id":1,"alamat":"Bandung","no_hp":"08126285285","total":"2.00","status":"Menunggu Pembayaran","email_sent":0,"tanggal_reservasi":"2025-06-23","tanggal_keluar":"2025-08-23","created_at":"2025-06-22T13:12:11.000000Z","updated_at":"2025-06-22T13:12:11.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":8,"reservation_id":"K2206202511","user_id":2,"kost_id":2,"alamat":"Bandung","no_hp":"08126285285","total":"3.00","status":"Dibayar","email_sent":1,"tanggal_reservasi":"2025-06-24","tanggal_keluar":"6192-02-24","created_at":"2025-06-22T13:17:17.000000Z","updated_at":"2025-06-23T10:38:01.000000Z","kost":{"id":2,"nama":"Kos Mabes 2","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cewe</li>
+
+<li>Dilarang membawa cowo</li>
+
+<li>Keluar masuk wajib mengunci pintu gerbang</li>
+
+</ol>","total_kamar":14,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/L6qtl54a9ZGUcgqFHtbSWfrCVGWHUYBhkT32WH1C.jpg","created_at":"2025-06-20T16:52:43.000000Z","updated_at":"2025-06-20T16:52:43.000000Z"}}]}] 
+[2025-06-23 11:25:53] local.INFO: Reservation found: [{"Illuminate\\Database\\Eloquent\\Collection":[{"id":1,"reservation_id":"K1806202545","user_id":2,"kost_id":1,"alamat":"Jl PLN Kebasen, Desa Kebasen, Kecamatan Kebasen","no_hp":"085178264989","total":"2.00","status":"Selesai","email_sent":1,"tanggal_reservasi":"2025-06-20","tanggal_keluar":"2025-06-21","created_at":"2025-06-18T14:19:22.000000Z","updated_at":"2025-06-23T11:18:22.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":2,"reservation_id":"K1806202575","user_id":2,"kost_id":1,"alamat":"cobacari","no_hp":"628158158929226","total":"4.00","status":"Selesai","email_sent":1,"tanggal_reservasi":"2025-06-19","tanggal_keluar":"2025-10-19","created_at":"2025-06-18T14:52:35.000000Z","updated_at":"2025-06-23T10:38:29.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":7,"reservation_id":"K2206202526","user_id":2,"kost_id":1,"alamat":"Bandung","no_hp":"08126285285","total":"2.00","status":"Menunggu Pembayaran","email_sent":0,"tanggal_reservasi":"2025-06-23","tanggal_keluar":"2025-08-23","created_at":"2025-06-22T13:12:11.000000Z","updated_at":"2025-06-22T13:12:11.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":8,"reservation_id":"K2206202511","user_id":2,"kost_id":2,"alamat":"Bandung","no_hp":"08126285285","total":"3.00","status":"Dibayar","email_sent":1,"tanggal_reservasi":"2025-06-24","tanggal_keluar":"6192-02-24","created_at":"2025-06-22T13:17:17.000000Z","updated_at":"2025-06-23T10:38:01.000000Z","kost":{"id":2,"nama":"Kos Mabes 2","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cewe</li>
+
+<li>Dilarang membawa cowo</li>
+
+<li>Keluar masuk wajib mengunci pintu gerbang</li>
+
+</ol>","total_kamar":14,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/L6qtl54a9ZGUcgqFHtbSWfrCVGWHUYBhkT32WH1C.jpg","created_at":"2025-06-20T16:52:43.000000Z","updated_at":"2025-06-20T16:52:43.000000Z"}}]}] 
+[2025-06-23 11:26:15] local.INFO: Reservation found: [{"Illuminate\\Database\\Eloquent\\Collection":[{"id":1,"reservation_id":"K1806202545","user_id":2,"kost_id":1,"alamat":"Jl PLN Kebasen, Desa Kebasen, Kecamatan Kebasen","no_hp":"085178264989","total":"2.00","status":"Selesai","email_sent":1,"tanggal_reservasi":"2025-06-20","tanggal_keluar":"2025-06-21","created_at":"2025-06-18T14:19:22.000000Z","updated_at":"2025-06-23T11:18:22.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":2,"reservation_id":"K1806202575","user_id":2,"kost_id":1,"alamat":"cobacari","no_hp":"628158158929226","total":"4.00","status":"Selesai","email_sent":1,"tanggal_reservasi":"2025-06-19","tanggal_keluar":"2025-10-19","created_at":"2025-06-18T14:52:35.000000Z","updated_at":"2025-06-23T10:38:29.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":7,"reservation_id":"K2206202526","user_id":2,"kost_id":1,"alamat":"Bandung","no_hp":"08126285285","total":"2.00","status":"Menunggu Pembayaran","email_sent":0,"tanggal_reservasi":"2025-06-23","tanggal_keluar":"2025-08-23","created_at":"2025-06-22T13:12:11.000000Z","updated_at":"2025-06-22T13:12:11.000000Z","kost":{"id":1,"nama":"Kos Mabes 1","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Kamar mandi luar</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cowo</li>
+
+<li>Dilarang membawa cewe</li>
+
+<li>Setiap pulang pergi wajib mengunci gerbang kos</li>
+
+</ol>","total_kamar":16,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/MKq6MoGpXAp3A1TbBjzvpic5SojW97LfMU1Q1741.png","created_at":"2025-06-18T14:17:04.000000Z","updated_at":"2025-06-20T16:50:57.000000Z"}},{"id":8,"reservation_id":"K2206202511","user_id":2,"kost_id":2,"alamat":"Bandung","no_hp":"08126285285","total":"3.00","status":"Dibayar","email_sent":1,"tanggal_reservasi":"2025-06-24","tanggal_keluar":"6192-02-24","created_at":"2025-06-22T13:17:17.000000Z","updated_at":"2025-06-23T10:38:01.000000Z","kost":{"id":2,"nama":"Kos Mabes 2","user_id":1,"aktif":1,"address_id":2,"harga":"500000.00","fasilitas":"<ol>
+
+<li>Kasur</li>
+
+<li>Kipas</li>
+
+<li>Bantal dan Guling</li>
+
+<li>Dapur bersama</li>
+
+</ol>","informasi":"<ol>
+
+<li>Kos khusus cewe</li>
+
+<li>Dilarang membawa cowo</li>
+
+<li>Keluar masuk wajib mengunci pintu gerbang</li>
+
+</ol>","total_kamar":14,"alamat_lengkap":"JL Kerinci, Desa Sidanegara, Kecamatan Cilacap Tengah","gmap":"https://maps.app.goo.gl/WkVpoEayD5F58sWt8","image":"kost_images/L6qtl54a9ZGUcgqFHtbSWfrCVGWHUYBhkT32WH1C.jpg","created_at":"2025-06-20T16:52:43.000000Z","updated_at":"2025-06-20T16:52:43.000000Z"}}]}] 

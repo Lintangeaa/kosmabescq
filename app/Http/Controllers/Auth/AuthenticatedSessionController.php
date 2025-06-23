@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        return redirect()->intended('/');
+        return redirect()->intended(route('customer.kost.index'));
     }
 
     /**
