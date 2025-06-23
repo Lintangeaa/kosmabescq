@@ -38,7 +38,7 @@
                             <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
                             <p class="text-sm font-medium text-yellow-600">Menunggu Pembayaran</p>
                         </div>
-                        <h3 class="mt-2 text-2xl font-bold text-yellow-700" id="pendingCount">0</h3>
+                        <h3 class="mt-2 text-2xl font-bold text-yellow-700">{{ $counts['pending'] }}</h3>
                     </div>
                     <div class="p-3 bg-yellow-100 rounded-full">
                         <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +57,7 @@
                             <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
                             <p class="text-sm font-medium text-blue-600">Dibayar</p>
                         </div>
-                        <h3 class="mt-2 text-2xl font-bold text-blue-700" id="paidCount">0</h3>
+                        <h3 class="mt-2 text-2xl font-bold text-blue-700">{{ $counts['paid'] }}</h3>
                     </div>
                     <div class="p-3 bg-blue-100 rounded-full">
                         <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@
                             <span class="w-3 h-3 bg-green-500 rounded-full"></span>
                             <p class="text-sm font-medium text-green-600">Selesai</p>
                         </div>
-                        <h3 class="mt-2 text-2xl font-bold text-green-700" id="completedCount">0</h3>
+                        <h3 class="mt-2 text-2xl font-bold text-green-700">{{ $counts['completed'] }}</h3>
                     </div>
                     <div class="p-3 bg-green-100 rounded-full">
                         <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +95,7 @@
                             <span class="w-3 h-3 bg-red-500 rounded-full"></span>
                             <p class="text-sm font-medium text-red-600">Dibatalkan</p>
                         </div>
-                        <h3 class="mt-2 text-2xl font-bold text-red-700" id="canceledCount">0</h3>
+                        <h3 class="mt-2 text-2xl font-bold text-red-700">{{ $counts['canceled'] }}</h3>
                     </div>
                     <div class="p-3 bg-red-100 rounded-full">
                         <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

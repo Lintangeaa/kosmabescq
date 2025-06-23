@@ -1,8 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Daftar Reservasi') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                {{ __('Daftar Reservasi') }}
+            </h2>
+            @php
+                $notifications = Auth::user()->notifications()
+                    ->with('reservation')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            @endphp
+            <x-notification-bell :notifications="$notifications" />
+        </div>
     </x-slot>
 
     <div class="p-12">
@@ -31,6 +40,8 @@
                                 class="font-medium text-gray-800">{{ $reservation->reservation_id }}</span></p>
                         <p class="mt-1 text-gray-600">Tanggal Mulai: <span
                                 class="font-medium text-gray-800">{{ $reservation->tanggal_reservasi }}</span></p>
+                        <p class="mt-1 text-gray-600">Tanggal Selesai: <span
+                                class="font-medium text-gray-800">{{ \Carbon\Carbon::parse($reservation->tanggal_reservasi)->addMonths(floor($reservation->total))->format('Y-m-d') }}</span></p>
                         <p class="mt-1 text-gray-600">Total Bulan: <span
                                 class="font-medium text-gray-800">{{ floor($reservation->total) }} Bulan</span></p>
 

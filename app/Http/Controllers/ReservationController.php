@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Mail\CheckoutReminderMail;
@@ -13,8 +14,17 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = Reservation::with('kost', 'user')->get();
-        return view('admin.reservations.index', compact('reservations'));
+        $reservations = Reservation::with(['kost', 'user'])->get();
+
+        // Count reservations by status
+        $counts = [
+            'pending' => $reservations->where('status', 'Menunggu Pembayaran')->count(),
+            'paid' => $reservations->where('status', 'Dibayar')->count(),
+            'completed' => $reservations->where('status', 'Selesai')->count(),
+            'canceled' => $reservations->where('status', 'Dibatalkan')->count(),
+        ];
+
+        return view('admin.reservations.index', compact('reservations', 'counts'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -53,6 +63,15 @@ class ReservationController extends Controller
                 if ($reservation->user && $reservation->user->email) {
                     Mail::to($reservation->user->email)->send(new CheckoutReminderMail($reservation));
 
+                    // Create notification record
+                    Notification::create([
+                        'user_id' => $reservation->user_id,
+                        'reservation_id' => $reservation->id,
+                        'type' => 'admin_reminder',
+                        'message' => "Pengingat pembayaran: Masa sewa kos {$reservation->kost->nama} akan jatuh tempo pada " .
+                            Carbon::parse($reservation->tanggal_reservasi)->addMonths(floor($reservation->total))->format('d M Y'),
+                    ]);
+
                     // Update email_sent status for tracking purposes only
                     $reservation->email_sent = true;
                     $reservation->save();
@@ -83,6 +102,15 @@ class ReservationController extends Controller
                 foreach ($reservations as $reservation) {
                     if ($reservation->user && $reservation->user->email) {
                         Mail::to($reservation->user->email)->send(new CheckoutReminderMail($reservation));
+
+                        // Create notification record for bulk notifications
+                        Notification::create([
+                            'user_id' => $reservation->user_id,
+                            'reservation_id' => $reservation->id,
+                            'type' => 'admin_reminder',
+                            'message' => "Pengingat pembayaran: Masa sewa kos {$reservation->kost->nama} akan jatuh tempo pada " .
+                                Carbon::parse($reservation->tanggal_reservasi)->addMonths(floor($reservation->total))->format('d M Y'),
+                        ]);
 
                         // Update email_sent status
                         $reservation->email_sent = true;

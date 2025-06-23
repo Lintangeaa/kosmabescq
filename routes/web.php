@@ -9,6 +9,7 @@ use App\Http\Controllers\KostController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -63,6 +64,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/reservations/notify', [ReservationController::class, 'sendNotification'])->name('reservations.notify');
         Route::get('/reservations/upcoming-checkouts', [ReservationController::class, 'getUpcomingCheckouts'])->name('admin.reservations.upcoming-checkouts');
     });
+
+    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.markAllAsRead');
+    Route::delete('/notifications/clear-read', [NotificationController::class, 'clearRead'])
+        ->name('notifications.clearRead');
 });
 
 Route::post('upload-image', [ImageUploadController::class, 'upload'])->name('upload.image');

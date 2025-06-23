@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Mail\CheckoutReminderMail;
 use App\Models\Reservation;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -18,30 +19,39 @@ class NotifyReservationCheckout extends Command
     public function handle()
     {
         try {
-            $sevenDaysFromNow = Carbon::now()->addDays(7);
-
-            $reservations = Reservation::with(['user', 'kost'])
-                ->whereIn('status', ['Dibayar', 'Selesai'])
+            $reservations = Reservation::where('status', 'Dibayar')
                 ->where('email_sent', false)
-                ->whereDate('tanggal_keluar', '<=', $sevenDaysFromNow)
-                ->whereDate('tanggal_keluar', '>', Carbon::now())
                 ->get();
 
             $emailsSent = 0;
 
             foreach ($reservations as $reservation) {
-                if ($reservation->user && $reservation->user->email) {
-                    try {
-                        Mail::to($reservation->user->email)
-                            ->send(new CheckoutReminderMail($reservation));
+                $endDate = Carbon::parse($reservation->tanggal_reservasi)->addMonths(floor($reservation->total));
+                $today = Carbon::now();
+                $daysUntilEnd = $today->diffInDays($endDate, false);
 
-                        // Update email_sent status
-                        $reservation->email_sent = true;
-                        $reservation->save();
+                if ($daysUntilEnd <= 7 && $daysUntilEnd > 0) {
+                    if ($reservation->user && $reservation->user->email) {
+                        try {
+                            Mail::to($reservation->user->email)
+                                ->send(new CheckoutReminderMail($reservation));
 
-                        $emailsSent++;
-                    } catch (\Exception $e) {
-                        $this->error("Failed to send email to {$reservation->user->email}: {$e->getMessage()}");
+                            // Create notification
+                            Notification::create([
+                                'user_id' => $reservation->user_id,
+                                'reservation_id' => $reservation->id,
+                                'type' => 'auto_reminder',
+                                'message' => "Pengingat otomatis: Masa sewa kos {$reservation->kost->nama} akan jatuh tempo pada " . $endDate->format('d M Y') . ". Harap segera lakukan pembayaran untuk melanjutkan masa sewa.",
+                            ]);
+
+                            // Update email_sent status
+                            $reservation->email_sent = true;
+                            $reservation->save();
+
+                            $emailsSent++;
+                        } catch (\Exception $e) {
+                            $this->error("Failed to send email to {$reservation->user->email}: {$e->getMessage()}");
+                        }
                     }
                 }
             }

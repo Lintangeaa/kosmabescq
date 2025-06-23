@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kost;
+use App\Models\Reservation;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -14,24 +16,46 @@ class DashboardController extends Controller
             'address',
             'user',
             'reservations' => function ($query) {
-                $query->selectRaw('kost_id, SUM(total) as reserved_count')
+                $query->whereIn('status', ['Dibayar', 'Menunggu Pembayaran', 'Selesai'])
+                    ->selectRaw('kost_id, COUNT(*) as active_reservations')
                     ->groupBy('kost_id');
             }
         ])->get();
 
-        // Menghitung kamar tersedia dan menambahkan reserved_count
+        // Menghitung kamar tersedia berdasarkan reservasi aktif
+        $totalKamarTersedia = 0;
         foreach ($kosts as $kost) {
-            $reserved_count = optional($kost->reservations->first())->reserved_count ?? 0;
-            $kost->reserved_count = $reserved_count;
-            $kost->kamar_tersedia = $kost->total_kamar - $reserved_count;
+            $active_reservations = optional($kost->reservations->first())->active_reservations ?? 0;
+            $kost->reserved_count = $active_reservations;
+            $kost->kamar_tersedia = $kost->total_kamar - $active_reservations;
+            $totalKamarTersedia += $kost->kamar_tersedia;
         }
 
-        // Sort Kos Populer: Berdasarkan reservasi terbanyak
+        // Hitung statistik untuk dashboard
+        $totalKos = $kosts->count();
+
+        // Hitung total reservasi yang sudah dibayar atau selesai
+        $totalReservasi = Reservation::whereIn('status', ['Dibayar', 'Selesai'])->count();
+
+        // Hitung total pendapatan dari reservasi yang sudah dibayar atau selesai
+        $totalPendapatan = Reservation::whereIn('status', ['Dibayar', 'Selesai'])
+            ->join('kosts', 'reservations.kost_id', '=', 'kosts.id')
+            ->select(DB::raw('SUM(reservations.total * kosts.harga) as total_pendapatan'))
+            ->value('total_pendapatan') ?? 0;
+
+        // Sort Kos Populer: Berdasarkan reservasi aktif
         $kosPopuler = $kosts->count() > 0 ? $kosts->sortByDesc('reserved_count')->take(5) : collect();
 
         // Sort Kos Kami: Berdasarkan sisa kamar terbanyak
         $kosKami = $kosts->count() > 0 ? $kosts->sortByDesc('kamar_tersedia')->take(8) : collect();
 
-        return view('dashboard', compact('kosPopuler', 'kosKami'));
+        return view('dashboard', compact(
+            'kosPopuler',
+            'kosKami',
+            'totalKos',
+            'totalKamarTersedia',
+            'totalReservasi',
+            'totalPendapatan'
+        ));
     }
 }
