@@ -44,7 +44,7 @@ class Kost extends Model
     public function getKamarTersediaAttribute()
     {
         $kamarTerpakai = $this->reservations()
-            ->whereIn('status', ['Dibayar', 'Menunggu Pembayaran'])
+            ->whereIn('status', ['Dibayar', 'Menunggu Pembayaran', 'Selesai'])
             ->count();
 
         return $this->total_kamar - $kamarTerpakai;

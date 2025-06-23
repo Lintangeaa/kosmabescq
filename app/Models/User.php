@@ -39,18 +39,12 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
-    // Menambahkan metode untuk memeriksa apakah pengguna adalah Admin, Owner, atau Customer
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === 'Admin';
     }
 
-    public function isOwner()
-    {
-        return $this->role === 'Owner';
-    }
-
-    public function isCustomer()
+    public function isCustomer(): bool
     {
         return $this->role === 'Customer';
     }

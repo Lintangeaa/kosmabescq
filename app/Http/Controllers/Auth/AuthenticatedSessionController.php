@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->isAdmin() || $user->isOwner()) {
+        if ($user->role === 'Admin') {
             return redirect()->intended('/dashboard');
         }
 
